@@ -1,7 +1,7 @@
 resource "null_resource" "vault_cluster_node" {
   for_each = var.cluster_nodes
   provisioner "file" {
-    destination = "/etc/vault/vault.hcl"
+    destination = "/tmp/vault.hcl"
     content = templatefile(
       "${path.module}/vault-cluster.hcl.tpl",
       {
@@ -18,11 +18,12 @@ resource "null_resource" "vault_cluster_node" {
     }
   }
   provisioner "remote-exec" {
-    inline = ["systemctl restart vault"]
+    inline = ["sudo systemctl restart vault"]
     connection {
       type    = "ssh"
       user    = var.ssh_user
       timeout = var.ssh_timeout
+      private_key = var.ssh_private_key
       host    = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[each.key] : each.key
     }
   }
