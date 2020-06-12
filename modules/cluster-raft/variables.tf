@@ -35,4 +35,7 @@ variable "unseal_key" {
   type    = string
   default = "vault_unseal_keyring"
 }
-variable "project_id" {}
+variable "unseal_project_id" {
+  type    = string
+  default = ""
+}
