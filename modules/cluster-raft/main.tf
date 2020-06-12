@@ -14,7 +14,7 @@ resource "null_resource" "vault_cluster_node" {
       user        = var.ssh_user
       private_key = var.ssh_private_key
       timeout     = var.ssh_timeout
-      host        = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[each.key] : each.key
+      host        = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[each.key] : each.value
     }
   }
   provisioner "remote-exec" {
@@ -24,7 +24,7 @@ resource "null_resource" "vault_cluster_node" {
       user    = var.ssh_user
       timeout = var.ssh_timeout
       private_key = var.ssh_private_key
-      host    = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[each.key] : each.key
+      host    = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[each.key] : each.value
     }
   }
 }
