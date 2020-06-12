@@ -29,7 +29,7 @@ resource "null_resource" "vault_cluster_node" {
   }
 
   provisioner "remote-exec" {
-    inline = ["sudo mv /tmp/vault.hcl /etc/vault.d/vault.hcl; sudo mkdir -p /var/lib/vault/raft-vault_2/storage; sudo systemctl restart vault"]
+    inline = ["sudo mv /tmp/vault.hcl /etc/vault.d/vault.hcl; sudo systemctl restart vault"]
     connection {
       type        = "ssh"
       user        = var.ssh_user

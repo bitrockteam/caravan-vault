@@ -1,5 +1,5 @@
 storage "raft" {
-  path    = "${vault_home}/raft-vault_2/storage"
+  path    = "${vault_home}/storage"
   node_id = "${node_id}"
 }
 listener "tcp" {
