@@ -8,4 +8,5 @@ listener "tcp" {
   tls_disable     = true
 }
 disable_mlock = true
-cluster_addr  = "http://127.0.0.2:8201"
+cluster_addr  = "http://${node_ip}:8201"
+api_addr      = "http://${node_ip}:8200"

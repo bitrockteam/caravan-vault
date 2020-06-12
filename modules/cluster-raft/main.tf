@@ -7,6 +7,7 @@ resource "null_resource" "vault_cluster_node" {
     "${path.module}/vault-cluster.hcl.tpl",
     {
       node_id    = each.key
+      node_ip    = each.value
       vault_home = var.vault_home
     }
     )}
