@@ -10,7 +10,7 @@ resource "null_resource" "vault_cluster_node" {
         vault_home = var.vault_home
       }
       )}
-        ${templatefile(
+      ${templatefile(
       "${path.module}/unseal-${var.unseal_type}.hcl.tpl",
       {
         unseal_region  = var.unseal_region
