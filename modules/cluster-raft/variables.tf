@@ -20,6 +20,18 @@ variable "ssh_timeout" {
   default = "15s"
 }
 variable "unseal_type" {
-  type = string
+  type    = string
   default = "gcp"
+}
+variable "unseal_region" {
+  type    = string
+  default = "global"
+}
+variable "unseal_keyring" {
+  type    = string
+  default = "vault_unseal_keyring"
+}
+variable "unseal_key" {
+  type    = string
+  default = "vault_unseal_keyring"
 }
