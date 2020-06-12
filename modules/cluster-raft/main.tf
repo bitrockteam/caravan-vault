@@ -3,7 +3,7 @@ resource "null_resource" "vault_cluster_node" {
   provisioner "file" {
     destination = "/tmp/vault.hcl"
     content = templatefile(
-      "${path.module}/vault-cluster.hcl.tpl",
+      "${path.module}/vault-cluster-${var.unseal_type}.hcl.tpl",
       {
         node_id    = each.key
         vault_home = var.vault_home

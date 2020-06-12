@@ -19,3 +19,7 @@ variable "ssh_timeout" {
   type    = string
   default = "15s"
 }
+variable "unseal_type" {
+  type = string
+  default = "gcp"
+}
