@@ -16,6 +16,7 @@ resource "null_resource" "vault_cluster_node" {
         unseal_region  = var.unseal_region
         unseal_keyring = var.unseal_keyring
         unseal_key     = var.unseal_key
+        project        = var.project_id
       }
     )}
     EOT
