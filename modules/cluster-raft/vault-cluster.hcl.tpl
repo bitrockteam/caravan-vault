@@ -1,6 +1,12 @@
 storage "raft" {
   path    = "${vault_home}/storage"
   node_id = "${node_id}"
+  %{ for n in setsubtract(keys(cluster_nodes), [node_id]) ~}
+  retry_join {
+    leader_api_addr = "https://${cluster_nodes[n]}:8200"
+  }
+  %{ endfor ~}
+}
 }
 listener "tcp" {
   address         = "0.0.0.0:8200"
