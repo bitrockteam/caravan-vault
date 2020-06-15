@@ -58,7 +58,7 @@ resource "null_resource" "vault_cluster_node_1_init" {
 }
 
 resource "null_resource" "vault_cluster_node_not_1_init" {
-  count = length(var.cluster_nodes)
+  count = length(var.cluster_nodes) - 1
 
   depends_on = [
     null_resource.vault_cluster_node_1_init,
