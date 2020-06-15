@@ -63,7 +63,7 @@ resource "null_resource" "vault_cluster_node_not_1_init" {
   depends_on = [ 
     null_resource.vault_cluster_node_1_init,
   ]
-  
+
   provisioner "remote-exec" {
     inline = ["sudo systemctl start vault"]
     connection {
