@@ -46,7 +46,7 @@ provisioner "remote-exec" {
 resource "null_resource" "vault_cluster_node_1_init" {
 
   provisioner "remote-exec" {
-    inline = ["vault operator init"]
+    inline = ["export VAULT_ADDR=http://127.0.0.1:8200; vault operator init"]
     connection {
       type        = "ssh"
       user        = var.ssh_user
