@@ -46,7 +46,7 @@ provisioner "remote-exec" {
 resource "null_resource" "vault_cluster_node_1_init" {
 
   provisioner "remote-exec" {
-    inline = ["sudo systemctl start vault; sleep 10s; export VAULT_ADDR=http://127.0.0.1:8200; vault operator init |  awk '/Root Token/{print $4}' | sudo tee /root/root_token"]
+    inline = ["sudo systemctl start vault && sleep 10s && vault operator init -address=http://127.0.0.1:8200 |  awk '/Root Token/{print $4}' | sudo tee /root/root_token"]
     connection {
       type        = "ssh"
       user        = var.ssh_user
@@ -54,6 +54,11 @@ resource "null_resource" "vault_cluster_node_1_init" {
       private_key = var.ssh_private_key
       host        = var.cluster_nodes_public_ips[keys(var.cluster_nodes)[0]]
     }
+  }
+}
+resource "null_resource" "root_token" {
+  provisioner "local-exec" {
+    command = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${var.openstack_keypair} ubuntu@${openstack_networking_floatingip_v2.wr_manager_fip.address}:~/client.token ."
   }
 }
 
