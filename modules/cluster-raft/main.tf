@@ -52,12 +52,13 @@ resource "null_resource" "vault_cluster_node_1_init" {
       user        = var.ssh_user
       timeout     = var.ssh_timeout
       private_key = var.ssh_private_key
-      host        = var.cluster_nodes_public_ips["cluster-node-1"]
+      host        = var.cluster_nodes_public_ips[keys(var.cluster_nodes)[0]]
     }
   }
 }
 
 resource "null_resource" "vault_cluster_node_not_1_init" {
+  count      = length(var.cluster_nodes) - 1
 
   depends_on = [ 
     null_resource.vault_cluster_node_1_init,
@@ -80,7 +81,7 @@ resource "null_resource" "vault_cluster_node_not_1_init" {
       user        = var.ssh_user
       timeout     = var.ssh_timeout
       private_key = var.ssh_private_key
-      host        = var.cluster_nodes_public_ips["cluster-node-3"]
+      host        = var.cluster_nodes_public_ips[keys(var.cluster_nodes)[count.index + 1]]
     }
   }
 }
