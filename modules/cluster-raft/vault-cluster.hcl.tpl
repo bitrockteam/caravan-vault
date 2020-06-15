@@ -3,7 +3,7 @@ storage "raft" {
   node_id = "${node_id}"
   %{ for n in setsubtract(keys("${cluster_nodes}"), [node_id]) ~}
   retry_join {
-    leader_api_addr = "https://${cluster_nodes[n]}:8200"
+    leader_api_addr = "http://${cluster_nodes[n]}:8200"
   }
   %{ endfor ~}
 }
