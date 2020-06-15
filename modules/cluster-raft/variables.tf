@@ -17,7 +17,7 @@ variable "ssh_user" {
 }
 variable "ssh_timeout" {
   type    = string
-  default = "15s"
+  default = "30s"
 }
 variable "unseal_type" {
   type    = string
