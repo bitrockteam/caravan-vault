@@ -68,7 +68,17 @@ resource "null_resource" "vault_cluster_node_not_1_init" {
       user        = var.ssh_user
       timeout     = var.ssh_timeout
       private_key = var.ssh_private_key
-      host        = var.cluster_nodes_public_ips["cluster-node-2","cluster-node-3"]
+      host        = var.cluster_nodes_public_ips["cluster-node-2"]
+    }
+  }
+  provisioner "remote-exec" {
+    inline = ["sudo systemctl start vault"]
+    connection {
+      type        = "ssh"
+      user        = var.ssh_user
+      timeout     = var.ssh_timeout
+      private_key = var.ssh_private_key
+      host        = var.cluster_nodes_public_ips["cluster-node-3"]
     }
   }
 }
