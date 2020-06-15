@@ -46,7 +46,7 @@ provisioner "remote-exec" {
 resource "null_resource" "vault_cluster_node_1_init" {
 
   provisioner "remote-exec" {
-    inline = ["sudo systemctl start vault; export VAULT_ADDR=http://127.0.0.1:8200; vault operator init | sudo awk '/Root Token/{print $4}' > /root/root_token"]
+    inline = ["sudo systemctl start vault; sleep 10s; export VAULT_ADDR=http://127.0.0.1:8200; vault operator init |  awk '/Root Token/{print $4}' | sudo tee /root/root_token"]
     connection {
       type        = "ssh"
       user        = var.ssh_user
