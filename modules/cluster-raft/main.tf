@@ -6,9 +6,9 @@ resource "null_resource" "vault_cluster_node" {
       ${templatefile(
     "${path.module}/vault-cluster.hcl.tpl",
     {
-      node_id    = each.key
-      node_ip    = each.value
-      vault_home = var.vault_home
+      node_id       = each.key
+      node_ip       = each.value
+      vault_home    = var.vault_home
       cluster_nodes = var.cluster_nodes
     }
     )}
@@ -42,3 +42,25 @@ provisioner "remote-exec" {
   }
 }
 }
+
+resource "null_resource" "vault_cluster_node_1_init" {
+  connection {
+  type        = "ssh"
+  user        = var.ssh_user
+  private_key = var.ssh_private_key
+  timeout     = var.ssh_timeout
+  host        = var.cluster_nodes_public_ips[0]
+  }
+
+  provisioner "remote-exec" {
+    inline = ["vault operator init"]
+    connection {
+      type        = "ssh"
+      user        = var.ssh_user
+      timeout     = var.ssh_timeout
+      private_key = var.ssh_private_key
+      host        = var.cluster_nodes_public_ips[0]
+    }
+  }
+}
+
