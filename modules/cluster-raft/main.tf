@@ -9,6 +9,7 @@ resource "null_resource" "vault_cluster_node" {
       node_id    = each.key
       node_ip    = each.value
       vault_home = var.vault_home
+      cluster_nodes = var.cluster_nodes
     }
     )}
       ${templatefile(
