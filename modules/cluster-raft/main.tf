@@ -32,7 +32,7 @@ connection {
 }
 
 provisioner "remote-exec" {
-  inline = ["sudo mv /tmp/vault.hcl /etc/vault.d/vault.hcl; sudo systemctl restart vault"]
+  inline = ["sudo mv /tmp/vault.hcl /etc/vault.d/vault.hcl"]
   connection {
     type        = "ssh"
     user        = var.ssh_user
@@ -46,13 +46,29 @@ provisioner "remote-exec" {
 resource "null_resource" "vault_cluster_node_1_init" {
 
   provisioner "remote-exec" {
-    inline = ["export VAULT_ADDR=http://127.0.0.1:8200; vault operator init"]
+    inline = ["sudo systemctl start vault; export VAULT_ADDR=http://127.0.0.1:8200; vault operator init | awk '/Root Token/{print $4}' > /root/root_token"]
     connection {
       type        = "ssh"
       user        = var.ssh_user
       timeout     = var.ssh_timeout
       private_key = var.ssh_private_key
       host        = var.cluster_nodes_public_ips["cluster-node-1"]
+    }
+  }
+}
+
+resource "null_resource" "vault_cluster_node_not_1_init" {
+
+  depends_on = [ "null_resource.vault_cluster_node_1_init" ]
+
+  provisioner "remote-exec" {
+    inline = ["sudo systemctl start vault"]
+    connection {
+      type        = "ssh"
+      user        = var.ssh_user
+      timeout     = var.ssh_timeout
+      private_key = var.ssh_private_key
+      host        = var.cluster_nodes_public_ips["cluster-node-2","cluster-node-3"]
     }
   }
 }
