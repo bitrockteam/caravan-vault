@@ -44,13 +44,6 @@ provisioner "remote-exec" {
 }
 
 resource "null_resource" "vault_cluster_node_1_init" {
-  connection {
-  type        = "ssh"
-  user        = var.ssh_user
-  private_key = var.ssh_private_key
-  timeout     = var.ssh_timeout
-  host        = var.cluster_nodes_public_ips["cluster-node-1"]
-  }
 
   provisioner "remote-exec" {
     inline = ["vault operator init"]
