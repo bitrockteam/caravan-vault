@@ -13,6 +13,7 @@ listener "tcp" {
   cluster_address = "0.0.0.0:8201"
   tls_disable     = true
 }
+ui = true
 disable_mlock = true
 cluster_addr  = "http://${node_ip}:8201"
 api_addr      = "http://${node_ip}:8200"

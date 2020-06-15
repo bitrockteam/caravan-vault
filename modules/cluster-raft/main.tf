@@ -1,4 +1,7 @@
-resource "null_resource" "vault_cluster_node" {
+resource "null_resource" "vault_cluster_node_config" {
+  triggers = {
+    nodes = join(",", keys(var.cluster_nodes))
+  }
   for_each = var.cluster_nodes
   provisioner "file" {
     destination = "/tmp/vault.hcl"
@@ -22,13 +25,13 @@ resource "null_resource" "vault_cluster_node" {
     }
 )}
     EOT
-}
 connection {
   type        = "ssh"
   user        = var.ssh_user
   private_key = var.ssh_private_key
   timeout     = var.ssh_timeout
   host        = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[each.key] : each.value
+}
 }
 
 provisioner "remote-exec" {
@@ -44,9 +47,11 @@ provisioner "remote-exec" {
 }
 
 resource "null_resource" "vault_cluster_node_1_init" {
-
+  triggers = {
+    nodes = null_resource.vault_cluster_node_config[keys(var.cluster_nodes)[0]].id
+  }
   provisioner "remote-exec" {
-    inline = ["sudo systemctl start vault && sleep 10s && vault operator init -address=http://127.0.0.1:8200 |  awk '/Root Token/{print $4}' | sudo tee /root/root_token"]
+    script = "${path.module}/scripts/vault_cluster_node_1_init.sh"
     connection {
       type        = "ssh"
       user        = var.ssh_user
@@ -56,15 +61,34 @@ resource "null_resource" "vault_cluster_node_1_init" {
     }
   }
 }
-resource "null_resource" "root_token" {
+
+resource "local_file" "ssh-key" {
+  depends_on = [
+    null_resource.vault_cluster_node_1_init
+  ]
+  sensitive_content = var.ssh_private_key
+  filename          = "${path.module}/.ssh-key"
+  file_permission   = "0600"
+}
+
+resource "null_resource" "copy_root_token" {
+  depends_on = [
+    local_file.ssh-key,
+    null_resource.vault_cluster_node_1_init
+  ]
   provisioner "local-exec" {
-    command = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${var.openstack_keypair} ubuntu@${openstack_networking_floatingip_v2.wr_manager_fip.address}:~/client.token ."
+    command = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${path.module}/.ssh-key ${var.ssh_user}@${var.cluster_nodes_public_ips[keys(var.cluster_nodes)[0]]} 'sudo cat /root/root_token' > .root_token"
+  }
+  provisioner "local-exec" {
+    command = "rm ${path.module}/.ssh-key"
   }
 }
 
 resource "null_resource" "vault_cluster_node_not_1_init" {
-  count = length(var.cluster_nodes) - 1
-
+  count = length(var.cluster_nodes) - 1 < 0 ? 0 : length(var.cluster_nodes) - 1
+  triggers = {
+    nodes = join(",", keys(null_resource.vault_cluster_node_config))
+  }
   depends_on = [
     null_resource.vault_cluster_node_1_init,
   ]
