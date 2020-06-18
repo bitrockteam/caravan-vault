@@ -105,6 +105,10 @@ resource "null_resource" "vault_cluster_node_not_1_init" {
   }
 }
 
+provider "vault" {
+  address = "https://${null_resource.vault_cluster_node_config[keys(var.cluster_nodes)[0]].id}:8200"
+}
+
 resource "vault_mount" "consul" {
   path        = "consul"
   type        = "consul"
