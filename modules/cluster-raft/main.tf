@@ -110,24 +110,36 @@ provider "vault" {
 }
 
 resource "vault_mount" "consul" {
+  depends_on = [
+    null_resource.vault_cluster_node_1_init,
+  ]
   path        = "consul"
   type        = "consul"
   description = "Enable Consul secrets engine"
 }
 
 resource "vault_mount" "userpass" {
+  depends_on = [
+    null_resource.vault_cluster_node_1_init,
+  ]
   path        = "userpass"
   type        = "userpass"
   description = "Enable UserPass auth method"
 }
 
 resource "vault_mount" "approle" {
+  depends_on = [
+    null_resource.vault_cluster_node_1_init,
+  ]
   path        = "approle"
   type        = "approle"
   description = "Enable AppRole auth method"
 }
 
 resource "vault_mount" "GCP_secrets" {
+  depends_on = [
+    null_resource.vault_cluster_node_1_init,
+  ]
   path        = "GCP"
   type        = "GCP"
   description = "Enable GCP secrets engine"
