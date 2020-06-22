@@ -1,27 +1,18 @@
 provider "vault" {
-  address = "https://${var.vault_endpoint}:8200"
-}
-
-resource "vault_mount" "consul" {
-  path        = "consul"
-  type        = "consul"
-  description = "Enable Consul secrets engine"
-}
-
-resource "vault_mount" "userpass" {
-  path        = "userpass"
-  type        = "userpass"
-  description = "Enable UserPass auth method"
-}
-
-resource "vault_mount" "approle" {
-  path        = "approle"
-  type        = "approle"
-  description = "Enable AppRole auth method"
+  address = "http://${var.vault_endpoint}:8200"
+  skip_tls_verify = true
 }
 
 resource "vault_mount" "GCP_secrets" {
-  path        = "GCP"
-  type        = "GCP"
+  path        = "gcp"
+  type        = "gcp"
   description = "Enable GCP secrets engine"
+}
+
+resource "vault_consul_secret_backend" "consul_backend" {
+  path        = "consul/config/access"
+  description = "Manages the Consul backend"
+
+  address = "127.0.0.1:8500"
+  token   = var.bootstrap_token
 }
