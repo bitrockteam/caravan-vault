@@ -105,12 +105,3 @@ resource "null_resource" "vault_cluster_node_not_1_init" {
   }
 }
 
-data "null_data_source" "values" {
-  depends_on = [
-    null_resource.vault_cluster_node_1_init,
-  ]
-  inputs = {
-    cluster_node_1_public_ip = "${var.cluster_nodes_public_ips[0]}"
-  }
-}
-
