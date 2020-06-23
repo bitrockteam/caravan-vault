@@ -1,6 +1,6 @@
 resource "null_resource" "vault_cluster_node_config" {
   triggers = {
-    nodes = join(",", keys(var.cluster_nodes))
+    ids = join("-", var.cluster_nodes_ids)
   }
   for_each = var.cluster_nodes
   provisioner "file" {
@@ -9,10 +9,11 @@ resource "null_resource" "vault_cluster_node_config" {
       ${templatefile(
     "${path.module}/vault-cluster.hcl.tpl",
     {
-      node_id       = each.key
-      node_ip       = each.value
-      vault_home    = var.vault_home
-      cluster_nodes = var.cluster_nodes
+      node_id           = each.key
+      node_ip           = each.value
+      vault_home        = var.vault_home
+      cluster_nodes     = var.cluster_nodes
+      cluster_nodes_ids = var.cluster_nodes_ids
     }
     )}
       ${templatefile(
@@ -48,7 +49,7 @@ provisioner "remote-exec" {
 
 resource "null_resource" "vault_cluster_node_1_init" {
   triggers = {
-    nodes = null_resource.vault_cluster_node_config[keys(var.cluster_nodes)[0]].id
+    nodes = (length(null_resource.vault_cluster_node_config) > 0 ? null_resource.vault_cluster_node_config[keys(null_resource.vault_cluster_node_config)[0]].id : null)
   }
   provisioner "remote-exec" {
     script = "${path.module}/scripts/vault_cluster_node_1_init.sh"
@@ -85,9 +86,9 @@ resource "null_resource" "copy_root_token" {
 }
 
 resource "null_resource" "vault_cluster_node_not_1_init" {
-  count = length(var.cluster_nodes) - 1 < 0 ? 0 : length(var.cluster_nodes) - 1
+  count = length(var.cluster_nodes_ids) - 1 < 0 ? 0 : length(var.cluster_nodes_ids) - 1
   triggers = {
-    nodes = join(",", keys(null_resource.vault_cluster_node_config))
+    nodes = join(",", try(null_resource.vault_cluster_node_config[*].id,[]))
   }
   depends_on = [
     null_resource.vault_cluster_node_1_init,
