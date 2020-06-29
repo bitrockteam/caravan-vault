@@ -23,12 +23,3 @@ path "consul/creds/agent-role" {
 EOT
 }
 
-resource "vault_token_auth_backend_role" "allow_agent" {
-  role_name                 = "cluster-node"
-  allowed_policies          = ["allow_agent"]
-  disallowed_policies       = ["default"]
-  token_period              = "86400"
-  renewable                 = true
-  token_explicit_max_ttl    = "115200"
-  path_suffix               = "path-suffix"
-}
