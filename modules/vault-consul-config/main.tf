@@ -8,7 +8,7 @@ data "vault_generic_secret" "consul_bootstrap_token" {
 }
 
 resource "vault_consul_secret_backend" "consul_backend" {
-  path        = "consul/config/access"
+  path        = "consul"
   description = "Manages the Consul backend"
 
   address = "127.0.0.1:8500"
@@ -16,7 +16,7 @@ resource "vault_consul_secret_backend" "consul_backend" {
 }
 
 resource "vault_consul_secret_backend_role" "agent_policy_node_0" {
-  name    = "test-role"
+  name    = "agent-role"
   backend = vault_consul_secret_backend.consul_backend.path
 
   policies = [
