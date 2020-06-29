@@ -3,10 +3,8 @@ provider "vault" {
   skip_tls_verify = true
 }
 
-resource "vault_mount" "GCP_secrets" {
-  path        = "gcp"
-  type        = "gcp"
-  description = "Enable GCP secrets engine"
+data "vault_generic_secret" "consul_bootstrap_token" {
+  path = "secret/consul/bootstrap_token"
 }
 
 resource "vault_consul_secret_backend" "consul_backend" {
@@ -14,5 +12,14 @@ resource "vault_consul_secret_backend" "consul_backend" {
   description = "Manages the Consul backend"
 
   address = "127.0.0.1:8500"
-  token   = var.bootstrap_token
+  token   = data.vault_generic_secret.consul_bootstrap_token.data["token"]
+}
+
+resource "vault_consul_secret_backend_role" "agent_policy_node_0" {
+  name    = "test-role"
+  backend = vault_consul_secret_backend.consul_backend.path
+
+  policies = [
+    "agent-token",
+  ]
 }
