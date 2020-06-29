@@ -15,11 +15,11 @@ resource "vault_consul_secret_backend" "consul_backend" {
   token   = data.vault_generic_secret.consul_bootstrap_token.data["token"]
 }
 
-resource "vault_consul_secret_backend_role" "agent_policy_node_0" {
-  name    = "agent-role-0"
+resource "vault_consul_secret_backend_role" "agent_policy_node" {
+  name    = "agent-role"
   backend = vault_consul_secret_backend.consul_backend.path
 
   policies = [
-    "agent-token-0",
+    "agent-token",
   ]
 }
