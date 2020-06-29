@@ -15,7 +15,7 @@ resource "vault_gcp_auth_backend_role" "gcp" {
 }
 
 resource "vault_policy" "allow_agent" {
-  name = "allow_agent"
+  name = "agent-role"
 
   policy = <<EOT
 path "consul/creds/agent-role" {
