@@ -16,10 +16,10 @@ resource "vault_consul_secret_backend" "consul_backend" {
 }
 
 resource "vault_consul_secret_backend_role" "agent_policy_node_0" {
-  name    = "agent-role"
+  name    = "agent-role-0"
   backend = vault_consul_secret_backend.consul_backend.path
 
   policies = [
-    "agent-token",
+    "agent-token-0",
   ]
 }
