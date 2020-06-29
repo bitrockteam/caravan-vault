@@ -2,7 +2,6 @@ provider "vault" {
   address = "http://${var.vault_endpoint}:8200"
   skip_tls_verify = true
 }
-#cluster-node@${var.project_id}.iam.gserviceaccount.com
 
 resource "vault_gcp_auth_backend_role" "gcp" {
     backend                = vault_auth_backend.gcp[0].path
