@@ -1,16 +1,48 @@
-variable "google_authenticate" {
-  type    = bool
-  default = false
-}
-
-variable "google_authenticate_admin_group_name" {
-  type    = string
-  default = null
-}
-
 variable "vault_endpoint" {
   type    = string
   default = null
 }
 
-variable "project_id" {}
+variable "gcp_authenticate" {
+  type    = bool
+  default = false
+}
+
+variable "gcp_authenticate_admin_group_name" {
+  type    = string
+  default = null
+}
+
+
+variable "gcp_project_id" {
+  type = string
+}
+
+variable "gsuite_authenticate" {
+  type    = bool
+  default = false
+}
+variable "gsuite_domain" {
+  type    = string
+  default = null
+}
+variable "gsuite_client_id" {
+  type    = string
+  default = null
+}
+variable "gsuite_client_secret" {
+  type    = string
+  default = null
+}
+variable "gsuite_default_role" {
+  type    = string
+  default = null
+}
+variable "gsuite_default_role_policies" {
+  type    = list(string)
+  default = []
+}
+variable "gsuite_allowed_redirect_uris" {
+  type    = list(string)
+  default = []
+}
