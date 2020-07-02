@@ -37,8 +37,19 @@ resource "vault_jwt_auth_backend_role" "gsuite_default_role" {
 
   user_claim = "sub"
   role_type  = "oidc"
+  oidc_scopes = [
+    "openid",
+    "email",
+    "profile"
+  ]
   bound_claims = {
-    hd = var.gsuite_domain
+    "hd" = var.gsuite_domain
   }
+  claim_mappings = {
+    "email" = "name"
+    "name"  = "display_name"
+    "hd"    = "domain"
+  }
+  verbose_oidc_logging  = true
   allowed_redirect_uris = var.gsuite_allowed_redirect_uris
 }
