@@ -1,8 +1,3 @@
-provider "vault" {
-  address = "http://${var.vault_endpoint}:8200"
-  skip_tls_verify = true
-}
-
 data "vault_generic_secret" "consul_bootstrap_token" {
   path = "secret/consul/bootstrap_token"
 }
