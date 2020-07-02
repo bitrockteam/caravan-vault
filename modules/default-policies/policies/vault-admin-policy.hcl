@@ -31,6 +31,11 @@ path "secret/*"
 {
   capabilities = ["create", "read", "update", "delete", "list", "sudo"]
 }
+# List, create, update, and delete consul tokens
+path "consul/*"
+{
+  capabilities = ["create", "read", "update", "delete", "list", "sudo"]
+}
 
 # Manage and manage secret backends broadly across Vault.
 path "sys/mounts/*"
