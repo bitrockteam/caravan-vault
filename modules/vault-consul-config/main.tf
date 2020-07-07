@@ -19,11 +19,6 @@ resource "vault_consul_secret_backend_role" "agent_node_role" {
   ]
 }
 
-
-provider "consul" {
-  address    = var.consul_endpoint
-}
-
 resource "consul_acl_policy" "cluster_node_agent_policy" {
   name        = "cluster-node-agent-policy"
   rules       = file("${path.module}/acls/cluster-node-agent.hcl")
@@ -48,4 +43,8 @@ resource "consul_acl_token_policy_attachment" "ui_token" {
   ]
   token_id = data.vault_generic_secret.consul_bootstrap_token.data["accessorid"]
   policy = consul_acl_policy.ui_policy.name
+}
+
+data "consul_acl_token" "ui_token" {
+  accessor_id = consul_acl_token_policy_attachment.ui_token.token_id
 }
