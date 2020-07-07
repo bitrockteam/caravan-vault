@@ -1,6 +1,6 @@
-data "vault_generic_secret" "consul_bootstrap_token" {
-  path = "secret/consul/bootstrap_token"
-}
+# data "vault_generic_secret" "consul_bootstrap_token" {
+#   path = "secret/consul/bootstrap_token"
+# }
 
 resource "vault_consul_secret_backend" "consul_backend" {
   path        = "consul"
