@@ -37,16 +37,13 @@ resource "consul_acl_token_policy_attachment" "cluster_node_agent_token" {
 }
 
 
-resource "consul_acl_token_policy_attachment" "ui_token" {
-  depends_on = [
-    consul_acl_policy.ui_policy,
-  ]
-  token_id = data.vault_generic_secret.consul_bootstrap_token.data["accessorid"]
-  policy = consul_acl_policy.ui_policy.name
+resource "consul_acl_token" "ui_token" {
+  description = "ui ploicy token"
+  policies = ["${consul_acl_policy.ui_policy.name}"]
 }
 
 data "consul_acl_token_secret_id" "ui_token" {
-  accessor_id = consul_acl_token_policy_attachment.ui_token.token_id
+  accessor_id = consul_acl_token.ui_token.id
 }
 
 resource "vault_generic_secret" "ui_token" {
@@ -54,7 +51,7 @@ resource "vault_generic_secret" "ui_token" {
 
   data_json = <<EOT
 {
-  "token":   "${data.consul_acl_token_secret_id.ui_token.secret_id}",
+  "token": "${data.consul_acl_token_secret_id.ui_token.secret_id}"
 }
 EOT
 }
