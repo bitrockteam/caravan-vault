@@ -7,7 +7,7 @@ resource "vault_consul_secret_backend" "consul_backend" {
   description = "Manages the Consul backend"
 
   address = "127.0.0.1:8500"
-  token   = data.vault_generic_secret.consul_bootstrap_token.data["token"]
+  token   = data.vault_generic_secret.consul_bootstrap_token.data["secretid"]
 }
 
 resource "vault_consul_secret_backend_role" "agent_node_role" {
