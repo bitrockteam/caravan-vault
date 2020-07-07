@@ -45,7 +45,7 @@ resource "consul_acl_token_policy_attachment" "ui_token" {
   policy = consul_acl_policy.ui_policy.name
 }
 
-data "consul_acl_token" "ui_token" {
+data "consul_acl_token_secret_id" "ui_token" {
   accessor_id = consul_acl_token_policy_attachment.ui_token.token_id
 }
 
@@ -54,7 +54,7 @@ resource "vault_generic_secret" "ui_token" {
 
   data_json = <<EOT
 {
-  "token":   "${data.consul_acl_token.ui_token}",
+  "token":   "${data.consul_acl_token.ui_token.secret_id}",
 }
 EOT
 }
