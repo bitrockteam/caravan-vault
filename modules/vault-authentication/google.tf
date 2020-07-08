@@ -4,13 +4,24 @@ resource "vault_auth_backend" "gcp" {
   path  = "gcp"
 }
 
-resource "vault_gcp_auth_backend_role" "gcp" {
+resource "vault_gcp_auth_backend_role" "gcp-cluster-node" {
   count                  = var.gcp_authenticate ? 1 : 0
   backend                = vault_auth_backend.gcp[0].path
   bound_projects         = [var.gcp_project_id]
   bound_service_accounts = ["cluster-node@${var.gcp_project_id}.iam.gserviceaccount.com"]
-  token_policies         = ["agent-role"]
+  token_policies         = ["cluster-node-agent-policy"]
   role                   = "cluster-node"
+  type                   = "iam"
+  allow_gce_inference    = true
+}
+
+resource "vault_gcp_auth_backend_role" "gcp-worker-node" {
+  count                  = var.gcp_authenticate ? 1 : 0
+  backend                = vault_auth_backend.gcp[0].path
+  bound_projects         = [var.gcp_project_id]
+  bound_service_accounts = ["wrknodeacc-def-wrkr-tpl@hcpoc-test-project-3564705688.iam.gserviceaccount.com"]
+  token_policies         = ["cluster-node-agent-policy"]
+  role                   = "worker-node"
   type                   = "iam"
   allow_gce_inference    = true
 }
