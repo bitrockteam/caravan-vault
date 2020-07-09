@@ -19,7 +19,7 @@ resource "vault_gcp_auth_backend_role" "gcp-worker-node" {
   count                  = var.gcp_authenticate ? 1 : 0
   backend                = vault_auth_backend.gcp[0].path
   bound_projects         = [var.gcp_project_id]
-  bound_service_accounts = ["wrknodeacc-def-wrkr-tpl@hcpoc-test-project-3564705688.iam.gserviceaccount.com"]
+  bound_service_accounts = ["wrknodeacc-def-wrkr@hcpoc-test-project-3564705688.iam.gserviceaccount.com"]
   token_policies         = ["cluster-node-agent-policy"]
   role                   = "worker-node"
   type                   = "iam"
