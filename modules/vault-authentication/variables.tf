@@ -12,11 +12,13 @@ variable "gcp_authenticate_admin_group_name" {
   type    = string
   default = null
 }
-variable "gcp_agent_service_accounts" {
+variable "gcp_cluster_node_service_account" {
+  type = string
+  default = "cluster-node"
+}
+variable "gcp_worker_node_service_accounts" {
   type = list(string)
-  default = [
-    "cluster-node"
-  ]
+  default = []
 }
 
 
