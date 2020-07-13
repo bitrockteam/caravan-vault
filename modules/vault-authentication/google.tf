@@ -1,13 +1,3 @@
-data "terraform_remote_state" "bootstrap" {
-  count = var.gcp_authenticate ? 1 : 0
-  backend = "gcs"
-
-  config = {
-    bucket = "tfbe-${var.gcp_project_id}"
-    prefix = "terraform/state"
-  }
-}
-
 resource "vault_auth_backend" "gcp" {
   count = var.gcp_authenticate ? 1 : 0
   type  = "gcp"
