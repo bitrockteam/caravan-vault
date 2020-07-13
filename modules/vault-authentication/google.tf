@@ -5,6 +5,7 @@ resource "vault_auth_backend" "gcp" {
 }
 
 resource "vault_gcp_auth_backend_role" "gcp-cluster-node" {
+  depends_on             = [vault_auth_backend.gcp]
   count                  = var.gcp_authenticate ? 1 : 0
   backend                = vault_auth_backend.gcp[0].path
   bound_projects         = [var.gcp_project_id]
@@ -17,6 +18,7 @@ resource "vault_gcp_auth_backend_role" "gcp-cluster-node" {
 
 resource "vault_gcp_auth_backend_role" "gcp-worker-node" {
   count                  = var.gcp_authenticate ? 1 : 0
+  depends_on             = [vault_auth_backend.gcp]
   backend                = vault_auth_backend.gcp[0].path
   bound_projects         = [var.gcp_project_id]
   bound_service_accounts = ["wrknodeacc-def-wrkr@hcpoc-test-project-3564705688.iam.gserviceaccount.com"]
