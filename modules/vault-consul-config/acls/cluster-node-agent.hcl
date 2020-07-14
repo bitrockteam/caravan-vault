@@ -5,7 +5,7 @@ node_prefix "" {
   policy = "write"
 }
 service_prefix "" {
-  policy = "read"
+  policy = "write"
 }
 session_prefix "" {
   policy = "read"
