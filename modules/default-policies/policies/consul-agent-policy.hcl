@@ -1,4 +1,4 @@
 # path to consul backend
-path "consul/creds/agent-role" {
+path "consul/creds/consul-agent-role" {
   capabilities = ["read"]
 }
