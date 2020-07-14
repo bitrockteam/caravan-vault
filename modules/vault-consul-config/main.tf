@@ -11,16 +11,16 @@ resource "vault_consul_secret_backend" "consul_backend" {
 }
 
 resource "vault_consul_secret_backend_role" "agent_node_role" {
-  name    = "agent-role"
+  name    = "consul-agent-role"
   backend = vault_consul_secret_backend.consul_backend.path
 
   policies = [
-    "cluster-node-agent-policy",
+    "consul-agent-role",
   ]
 }
 
 resource "consul_acl_policy" "cluster_node_agent_policy" {
-  name        = "cluster-node-agent-policy"
+  name        = "consul-agent-role"
   rules       = file("${path.module}/acls/cluster-node-agent.hcl")
 }
 resource "consul_acl_policy" "ui_policy" {
