@@ -73,39 +73,42 @@ resource "consul_service" "consul_servers" {
   }
 }
 
-# data "google_compute_region_instance_group" "group" {
-#   name = var.region_instance_group
-# }
+data "google_compute_region_instance_group" "group" {
+  name    = var.region_instance_group
+  project = var.gcp_project_id
+  region  = var.region
+}
 
-# resource "consul_service" "consul_clients" {
-#   for_each = data.google_compute_region_instance_group.group.instances
+resource "consul_service" "consul_clients" {
+  count = length(data.google_compute_region_instance_group.group.instances)
 
-#   name    = "consul"
-#   node    = each.key
-#   port    = 8300
-#   tags    = ["consul", "client"]
-#   check {
-#     check_id                          = "service:consul"
-#     name                              = "Consul health check"
-#     status                            = "passing"
-#     tcp                               = "127.0.0.1:8300"
-#     tls_skip_verify                   = false
-#     interval                          = "10s"
-#     timeout                           = "5s"
-#   }
-# }
-
-resource "consul_service" "vault" {
-  count = 3
-  name    = "vault"
-  node    = "clustnode0${count.index + 1}"
-  port    = 8200
-  tags    = ["vault"]
+  name    = "consul"
+  node    = regex("[^/]+$", data.google_compute_region_instance_group.group.instances[count.index].instance)
+  port    = 8300
+  tags    = ["consul", "client"]
   check {
-    check_id                          = "service:vault"
-    name                              = "Vault health check"
+    check_id                          = "service:consul"
+    name                              = "Consul health check"
     status                            = "passing"
-    tcp                               = "127.0.0.1:8200"
+    tcp                               = "127.0.0.1:8300"
+    tls_skip_verify                   = false
+    interval                          = "10s"
+    timeout                           = "5s"
+  }
+}
+
+resource "consul_service" "dnsmasq_workers" {
+  count = length(data.google_compute_region_instance_group.group.instances)
+
+  name    = "dnsmasq"
+  node    = regex("[^/]+$", data.google_compute_region_instance_group.group.instances[count.index].instance)
+  port    = 53
+  tags    = ["dnsmasq"]
+  check {
+    check_id                          = "service:dnsmasq"
+    name                              = "DNSmasq health check"
+    status                            = "passing"
+    tcp                               = "127.0.0.1:53"
     tls_skip_verify                   = false
     interval                          = "10s"
     timeout                           = "5s"
@@ -123,6 +126,23 @@ resource "consul_service" "dnsmasq" {
     name                              = "DNSmasq health check"
     status                            = "passing"
     tcp                               = "127.0.0.1:53"
+    tls_skip_verify                   = false
+    interval                          = "10s"
+    timeout                           = "5s"
+  }
+}
+
+resource "consul_service" "vault" {
+  count = 3
+  name    = "vault"
+  node    = "clustnode0${count.index + 1}"
+  port    = 8200
+  tags    = ["vault"]
+  check {
+    check_id                          = "service:vault"
+    name                              = "Vault health check"
+    status                            = "passing"
+    tcp                               = "127.0.0.1:8200"
     tls_skip_verify                   = false
     interval                          = "10s"
     timeout                           = "5s"
