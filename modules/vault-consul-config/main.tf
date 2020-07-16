@@ -82,12 +82,12 @@ data "google_compute_region_instance_group" "group" {
 resource "consul_service" "consul_clients" {
   count = length(data.google_compute_region_instance_group.group.instances)
 
-  name    = "consul"
+  name    = "consul_client"
   node    = regex("[^/]+$", data.google_compute_region_instance_group.group.instances[count.index].instance)
   port    = 8300
   tags    = ["consul", "client"]
   check {
-    check_id                          = "service:consul"
+    check_id                          = "service:consul_client"
     name                              = "Consul health check"
     status                            = "passing"
     tcp                               = "127.0.0.1:8300"
@@ -100,18 +100,19 @@ resource "consul_service" "consul_clients" {
 resource "consul_service" "dnsmasq_workers" {
   count = length(data.google_compute_region_instance_group.group.instances)
 
-  name    = "dnsmasq"
+  name    = "dnsmasq_worker"
   node    = regex("[^/]+$", data.google_compute_region_instance_group.group.instances[count.index].instance)
   port    = 53
-  tags    = ["dnsmasq"]
+  tags    = ["dnsmasq", "workers"]
   check {
-    check_id                          = "service:dnsmasq"
+    check_id                          = "service:dnsmasq_worker"
     name                              = "DNSmasq health check"
     status                            = "passing"
     tcp                               = "127.0.0.1:53"
     tls_skip_verify                   = false
     interval                          = "10s"
     timeout                           = "5s"
+    deregister_critical_service_after = "30s"
   }
 }
 
@@ -129,6 +130,7 @@ resource "consul_service" "dnsmasq" {
     tls_skip_verify                   = false
     interval                          = "10s"
     timeout                           = "5s"
+    deregister_critical_service_after = "30s"
   }
 }
 
