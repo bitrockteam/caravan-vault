@@ -19,30 +19,40 @@ resource "null_resource" "vault_cluster_node_config" {
       ${templatefile(
     "${path.module}/unseal-${var.unseal_type}.hcl.tpl",
     {
-      unseal_region  = var.unseal_region
-      unseal_keyring = var.unseal_keyring
-      unseal_key     = var.unseal_key
-      project_id     = var.unseal_project_id
+      unseal_region              = var.unseal_region
+      unseal_keyring             = var.unseal_keyring
+      unseal_key                 = var.unseal_key
+      unseal_crypto_endpoint     = var.unseal_crypto_endpoint
+      unseal_management_endpoint = var.unseal_management_endpoint
+      project_id                 = var.unseal_project_id
     }
 )}
     EOT
 connection {
-  type        = "ssh"
-  user        = var.ssh_user
-  private_key = var.ssh_private_key
-  timeout     = var.ssh_timeout
-  host        = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[each.key] : each.value
+  type                = "ssh"
+  user                = var.ssh_user
+  private_key         = var.ssh_private_key
+  timeout             = var.ssh_timeout
+  host                = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[each.key] : each.value
+  bastion_host        = var.ssh_bastion_host
+  bastion_port        = var.ssh_bastion_port
+  bastion_private_key = var.ssh_bastion_private_key
+  bastion_user        = var.ssh_bastion_user
 }
 }
 
 provisioner "remote-exec" {
   inline = ["sudo mv /tmp/vault.hcl /etc/vault.d/vault.hcl"]
   connection {
-    type        = "ssh"
-    user        = var.ssh_user
-    timeout     = var.ssh_timeout
-    private_key = var.ssh_private_key
-    host        = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[each.key] : each.value
+    type                = "ssh"
+    user                = var.ssh_user
+    timeout             = var.ssh_timeout
+    private_key         = var.ssh_private_key
+    host                = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[each.key] : each.value
+    bastion_host        = var.ssh_bastion_host
+    bastion_port        = var.ssh_bastion_port
+    bastion_private_key = var.ssh_bastion_private_key
+    bastion_user        = var.ssh_bastion_user
   }
 }
 }
@@ -54,11 +64,15 @@ resource "null_resource" "vault_cluster_node_1_init" {
   provisioner "remote-exec" {
     script = "${path.module}/scripts/vault_cluster_node_1_init.sh"
     connection {
-      type        = "ssh"
-      user        = var.ssh_user
-      timeout     = var.ssh_timeout
-      private_key = var.ssh_private_key
-      host        = var.cluster_nodes_public_ips[keys(var.cluster_nodes)[0]]
+      type                = "ssh"
+      user                = var.ssh_user
+      timeout             = var.ssh_timeout
+      private_key         = var.ssh_private_key
+      host                = var.cluster_nodes_public_ips[keys(var.cluster_nodes)[0]]
+      bastion_host        = var.ssh_bastion_host
+      bastion_port        = var.ssh_bastion_port
+      bastion_private_key = var.ssh_bastion_private_key
+      bastion_user        = var.ssh_bastion_user
     }
   }
 }
@@ -88,7 +102,7 @@ resource "null_resource" "copy_root_token" {
 resource "null_resource" "vault_cluster_node_not_1_init" {
   count = length(var.cluster_nodes_ids) - 1 < 0 ? 0 : length(var.cluster_nodes_ids) - 1
   triggers = {
-    nodes = join(",", try(null_resource.vault_cluster_node_config[*].id,[]))
+    nodes = join(",", try(null_resource.vault_cluster_node_config[*].id, []))
   }
   depends_on = [
     null_resource.vault_cluster_node_1_init,
@@ -97,11 +111,15 @@ resource "null_resource" "vault_cluster_node_not_1_init" {
   provisioner "remote-exec" {
     inline = ["sudo systemctl start vault"]
     connection {
-      type        = "ssh"
-      user        = var.ssh_user
-      timeout     = var.ssh_timeout
-      private_key = var.ssh_private_key
-      host        = var.cluster_nodes_public_ips[keys(var.cluster_nodes)[count.index + 1]]
+      type                = "ssh"
+      user                = var.ssh_user
+      timeout             = var.ssh_timeout
+      private_key         = var.ssh_private_key
+      host                = var.cluster_nodes_public_ips[keys(var.cluster_nodes)[count.index + 1]]
+      bastion_host        = var.ssh_bastion_host
+      bastion_port        = var.ssh_bastion_port
+      bastion_private_key = var.ssh_bastion_private_key
+      bastion_user        = var.ssh_bastion_user
     }
   }
 }
