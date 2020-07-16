@@ -87,6 +87,7 @@ resource "consul_service" "consul_clients" {
   port    = 8300
   tags    = ["consul", "client"]
   check {
+    # method=GET url=/v1/agent/self and check the health_score value 0 - healthy
     check_id                          = "service:consul_client"
     name                              = "Consul health check"
     status                            = "passing"
@@ -105,6 +106,7 @@ resource "consul_service" "dnsmasq_workers" {
   port    = 53
   tags    = ["dnsmasq", "workers"]
   check {
+    # nslookup soa consul
     check_id                          = "service:dnsmasq_worker"
     name                              = "DNSmasq health check"
     status                            = "passing"
@@ -116,13 +118,14 @@ resource "consul_service" "dnsmasq_workers" {
   }
 }
 
-resource "consul_service" "dnsmasq" {
+resource "consul_service" "dnsmasq_clusternode" {
   count = 3
-  name    = "dnsmasq"
+  name    = "dnsmasq_clusternode"
   node    = "clustnode0${count.index + 1}"
   port    = 53
   tags    = ["dnsmasq"]
   check {
+    # nslookup soa consul
     check_id                          = "service:dnsmasq"
     name                              = "DNSmasq health check"
     status                            = "passing"
@@ -141,6 +144,13 @@ resource "consul_service" "vault" {
   port    = 8200
   tags    = ["vault"]
   check {
+    # http://127.0.0.1:8200/v1/sys/health 
+    # 200 if initialized, unsealed, and active
+    # 429 if unsealed and standby
+    # 472 if disaster recovery mode replication secondary and active
+    # 473 if performance standby
+    # 501 if not initialized
+    # 503 if sealed
     check_id                          = "service:vault"
     name                              = "Vault health check"
     status                            = "passing"
