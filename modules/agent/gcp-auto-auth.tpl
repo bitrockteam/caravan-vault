@@ -14,3 +14,8 @@ auto_auth {
     }
   }
 }
+
+template {
+  source      = "/etc/consul.d/consul.hcl.tmpl"
+  destination = "/etc/consul.d/consul.hcl"
+}
