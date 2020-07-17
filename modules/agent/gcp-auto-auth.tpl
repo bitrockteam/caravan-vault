@@ -32,4 +32,5 @@ template {
   source      = "/etc/consul.d/consul.hcl.tmpl"
   destination = "/etc/consul.d/consul.hcl"
   backup      = true
+  command     = "sudo systemctl restart consul"
 }
