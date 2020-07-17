@@ -32,9 +32,8 @@ template {
   source      = "/etc/consul.d/consul.hcl.tmpl"
   destination = "/etc/consul.d/consul.hcl"
   backup      = true
-  command     = "sudo systemctl restart consul"
   wait {
-    min = "2s"
+    min = "10s"
     max = "10s"
   }
 }
