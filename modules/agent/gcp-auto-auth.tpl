@@ -27,7 +27,9 @@ template {
   source      = "/etc/consul.d/ca.tmpl"
   destination = "/etc/consul.d/ca"
 }
+
 template {
   source      = "/etc/consul.d/consul.hcl.tmpl"
   destination = "/etc/consul.d/consul.hcl"
+  backup      = true
 }
