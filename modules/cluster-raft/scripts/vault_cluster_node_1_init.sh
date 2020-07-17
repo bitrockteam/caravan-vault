@@ -21,7 +21,7 @@ vault secrets tune -max-lease-ttl=43800h pki_int && \
 vault write -format=json pki_int/intermediate/generate/internal common_name="consul Intermediate Authority" | jq -r '.data.csr' | tee pki_intermediate.csr && \
 vault write -format=json pki/root/sign-intermediate csr=@pki_intermediate.csr format=pem_bundle ttl="43800h" | jq -r '.data.certificate' | tee intermediate.cert.pem && \
 vault write pki_int/intermediate/set-signed certificate=@intermediate.cert.pem && \
-vault write pki_int/roles/consul allowed_domains="consul" allow_subdomains=true max_ttl="720h" && \
+vault write pki_int/roles/consul allowed_domains="consul" allow_subdomains=true allow_any_name=true max_ttl="720h" && \
 vault write pki_int/issue/consul common_name="consul" ttl="24h" | tee certs.json
 ##### this in the oven, look at consul tmpl #####
 # {{ with secret "pki_int/issue/consul" "common_name=consul" "ttl=24h" }}
