@@ -16,10 +16,6 @@ auto_auth {
 }
 
 template {
-  source      = "/etc/consul.d/consul.hcl.tmpl"
-  destination = "/etc/consul.d/consul.hcl"
-}
-template {
   source      = "/etc/consul.d/cert.tmpl"
   destination = "/etc/consul.d/cert"
 }
@@ -30,4 +26,8 @@ template {
 template {
   source      = "/etc/consul.d/ca.tmpl"
   destination = "/etc/consul.d/ca"
+}
+template {
+  source      = "/etc/consul.d/consul.hcl.tmpl"
+  destination = "/etc/consul.d/consul.hcl"
 }
