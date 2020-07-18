@@ -32,8 +32,5 @@ template {
   source      = "/etc/consul.d/consul.hcl.tmpl"
   destination = "/etc/consul.d/consul.hcl"
   backup      = true
-  wait {
-    min = "10s"
-    max = "10s"
-  }
+  error_on_missing_key = true
 }
