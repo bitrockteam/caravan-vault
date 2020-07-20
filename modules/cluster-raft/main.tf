@@ -129,7 +129,7 @@ resource "null_resource" "vault_certificates_sync" {
   depends_on = [
     null_resource.vault_cluster_node_1_init,
     null_resource.vault_cluster_node_not_1_init,
-    null_resource.vault_gcp_agent_config
+    module.vault_cluster_agents
   ]
   
   for_each = var.cluster_nodes
