@@ -95,12 +95,6 @@ resource "null_resource" "copy_root_token" {
     command = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${path.module}/.ssh-key ${var.ssh_user}@${var.cluster_nodes_public_ips[keys(var.cluster_nodes)[0]]} 'sudo cat /root/root_token' > .root_token"
   }
   provisioner "local-exec" {
-    command = "scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${path.module}/.ssh-key .root_token ${var.ssh_user}@${var.cluster_nodes_public_ips[keys(var.cluster_nodes)[1]]}:/home/centos/root_token"
-  }
-  provisioner "local-exec" {
-    command = "scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${path.module}/.ssh-key .root_token ${var.ssh_user}@${var.cluster_nodes_public_ips[keys(var.cluster_nodes)[2]]}:/home/centos/root_token"
-  }
-  provisioner "local-exec" {
     command = "rm ${path.module}/.ssh-key"
   }
 }
@@ -130,31 +124,3 @@ resource "null_resource" "vault_cluster_node_not_1_init" {
   }
 }
 
-resource "null_resource" "vault_certificates_sync" {
-  
-  triggers = {
-    nodes = join(",", try(null_resource.vault_cluster_node_not_1_init[*].id, []))
-  }
-
-  depends_on = [
-    null_resource.vault_cluster_node_1_init,
-    null_resource.vault_cluster_node_not_1_init
-  ]
-  
-  for_each = var.cluster_nodes
-
-  provisioner "remote-exec" {
-    script = "${path.module}/scripts/sync_certs.sh"
-    connection {
-      type                = "ssh"
-      user                = var.ssh_user
-      timeout             = var.ssh_timeout
-      private_key         = var.ssh_private_key
-      host                = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[each.key] : each.value
-      bastion_host        = var.ssh_bastion_host
-      bastion_port        = var.ssh_bastion_port
-      bastion_private_key = var.ssh_bastion_private_key
-      bastion_user        = var.ssh_bastion_user
-    }
-  }
-}
