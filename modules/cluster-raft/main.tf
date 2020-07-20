@@ -95,6 +95,12 @@ resource "null_resource" "copy_root_token" {
     command = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${path.module}/.ssh-key ${var.ssh_user}@${var.cluster_nodes_public_ips[keys(var.cluster_nodes)[0]]} 'sudo cat /root/root_token' > .root_token"
   }
   provisioner "local-exec" {
+    command = "scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${path.module}/.ssh-key .root_token ${var.ssh_user}@${var.cluster_nodes_public_ips[keys(var.cluster_nodes)[1]]}:/home/centos/root_token"
+  }
+  provisioner "local-exec" {
+    command = "scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${path.module}/.ssh-key .root_token ${var.ssh_user}@${var.cluster_nodes_public_ips[keys(var.cluster_nodes)[2]]}:/home/centos/root_token"
+  }
+  provisioner "local-exec" {
     command = "rm ${path.module}/.ssh-key"
   }
 }
@@ -126,10 +132,13 @@ resource "null_resource" "vault_cluster_node_not_1_init" {
 
 resource "null_resource" "vault_certificates_sync" {
   
+  triggers = {
+    nodes = join(",", try(null_resource.vault_cluster_node_not_1_init[*].id, []))
+  }
+
   depends_on = [
     null_resource.vault_cluster_node_1_init,
-    null_resource.vault_cluster_node_not_1_init,
-    module.vault_cluster_agents
+    null_resource.vault_cluster_node_not_1_init
   ]
   
   for_each = var.cluster_nodes

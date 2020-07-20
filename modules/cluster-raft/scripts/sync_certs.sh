@@ -2,6 +2,7 @@
 
 set -e
 
+sudo mv root_token /root/root_token
 export VAULT_TOKEN=`sudo cat /root/root_token` VAULT_ADDR=http://127.0.0.1:8200 && \
 vault write -format=json pki_int/issue/consul common_name="consul" ttl="168h" | tee certs.json && \
 cat certs.json | jq -r .data.issuing_ca | sudo tee /etc/consul.d/ca && \
