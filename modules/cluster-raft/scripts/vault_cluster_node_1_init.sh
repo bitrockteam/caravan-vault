@@ -18,7 +18,7 @@ vault write -field=certificate pki/root/generate/internal common_name="consul" t
 vault write pki/config/urls issuing_certificates="http://127.0.0.1:8200/v1/pki/ca" crl_distribution_points="http://127.0.0.1:8200/v1/pki/crl" && \
 vault secrets enable -path=pki_int pki && \
 vault secrets tune -max-lease-ttl=43800h pki_int && \
-vault write -format=json pki_int/intermediate/generate/internal common_name="Consul Intermediate Authority" alt_names="localhost,127.0.0.1" ip_sans="localhost,127.0.0.1" | jq -r '.data.csr' | tee pki_intermediate.csr && \
+vault write -format=json pki_int/intermediate/generate/internal common_name="Consul Intermediate Authority" alt_names="localhost,127.0.0.1" ip_sans="127.0.0.1" | jq -r '.data.csr' | tee pki_intermediate.csr && \
 vault write -format=json pki/root/sign-intermediate csr=@pki_intermediate.csr format=pem_bundle ttl="43800h" | jq -r '.data.certificate' | tee intermediate.cert.pem && \
 vault write pki_int/intermediate/set-signed certificate=@intermediate.cert.pem && \
 vault write pki_int/roles/consul allowed_domains="consul" allow_subdomains=true max_ttl="720h" && \
