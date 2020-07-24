@@ -32,3 +32,8 @@ template {
   source      = "/etc/consul.d/consul.hcl.tmpl"
   destination = "/etc/consul.d/consul.hcl"
 }
+
+template {
+  source      = "/etc/nomad.d/nomad.hcl.tmpl"
+  destination = "/etc/nomad.d/nomad.hcl"
+}
