@@ -24,11 +24,11 @@ resource "consul_acl_policy" "cluster_node_agent_policy" {
   rules       = file("${path.module}/acls/cluster-node-agent.hcl")
 }
 resource "consul_acl_policy" "nomad_server_policy" {
-  name        = "consul-agent-role"
+  name        = "nomad-server"
   rules       = file("${path.module}/acls/nomad-server.hcl")
 }
 resource "consul_acl_policy" "nomad_client_policy" {
-  name        = "consul-agent-role"
+  name        = "nomad-client"
   rules       = file("${path.module}/acls/nomad-client.hcl")
 }
 resource "consul_acl_policy" "ui_policy" {
