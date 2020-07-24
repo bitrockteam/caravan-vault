@@ -23,6 +23,14 @@ resource "consul_acl_policy" "cluster_node_agent_policy" {
   name        = "consul-agent-role"
   rules       = file("${path.module}/acls/cluster-node-agent.hcl")
 }
+resource "consul_acl_policy" "nomad_server_policy" {
+  name        = "consul-agent-role"
+  rules       = file("${path.module}/acls/nomad-server.hcl")
+}
+resource "consul_acl_policy" "nomad_client_policy" {
+  name        = "consul-agent-role"
+  rules       = file("${path.module}/acls/nomad-client.hcl")
+}
 resource "consul_acl_policy" "ui_policy" {
   name        = "ui-policy"
   rules       = file("${path.module}/acls/operator-ui.hcl")
@@ -38,8 +46,16 @@ resource "consul_acl_token_policy_attachment" "cluster_node_agent_token" {
 
 
 resource "consul_acl_token" "ui_token" {
-  description = "ui ploicy token"
+  description = "ui policy token"
   policies = ["${consul_acl_policy.ui_policy.name}"]
+}
+resource "consul_acl_token" "nomad_server_token" {
+  description = "nomad server policy token"
+  policies = ["${consul_acl_policy.nomad_server_policy.name}"]
+}
+resource "consul_acl_token" "nomad_client_token" {
+  description = "nomad client policy token"
+  policies = ["${consul_acl_policy.nomad_client_policy.name}"]
 }
 
 data "consul_acl_token_secret_id" "ui_token" {
@@ -55,6 +71,36 @@ resource "vault_generic_secret" "ui_token" {
 }
 EOT
 }
+
+data "consul_acl_token_secret_id" "nomad_client_token" {
+  accessor_id = consul_acl_token.nomad_client_token.id
+}
+
+resource "vault_generic_secret" "nomad_client_token" {
+  path = "secret/consul/nomad_client_token"
+
+  data_json = <<EOT
+{
+  "token": "${data.consul_acl_token_secret_id.nomad_client_token.secret_id}"
+}
+EOT
+}
+
+data "consul_acl_token_secret_id" "nomad_server_token" {
+  accessor_id = consul_acl_token.nomad_server_token.id
+}
+
+resource "vault_generic_secret" "nomad_server_token" {
+  path = "secret/consul/nomad_server_token"
+
+  data_json = <<EOT
+{
+  "token": "${data.consul_acl_token_secret_id.nomad_server_token.secret_id}"
+}
+EOT
+}
+
+
 
 resource "consul_service" "consul_servers" {
   count = 3
