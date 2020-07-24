@@ -3,6 +3,14 @@ path "consul/creds/consul-agent-role" {
   capabilities = ["read"]
 }
 
+path "secret/data/consul/nomad_server_token" {
+  capabilities = ["read"]
+}
+
+path "secret/data/consul/nomad_client_token" {
+  capabilities = ["read"]
+}
+
 path "sys/mounts/*" {
   capabilities = [ "create", "read", "update", "delete", "list" ]
 }
