@@ -13,6 +13,14 @@ listener "tcp" {
   cluster_address = "0.0.0.0:8201"
   tls_disable     = true
 }
+
+telemetry {
+  prometheus_retention_time = "30s"
+  disable_hostname = true
+}
+
+log_level = "Debug"
+
 ui = true
 disable_mlock = true
 cluster_addr  = "http://${node_ip}:8201"
