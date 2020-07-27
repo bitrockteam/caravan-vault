@@ -12,11 +12,7 @@ path "secret/data/consul/nomad_client_token" {
 }
 
 path "sys/mounts/*" {
-  capabilities = [ "create", "read", "update", "delete", "list" ]
-}
-
-path "sys/mounts" {
-  capabilities = [ "read", "list" ]
+  capabilities = [ "sudo", "create", "read", "update", "delete", "list" ]
 }
 
 path "pki*" {
