@@ -19,6 +19,10 @@ path "sys/mounts" {
   capabilities = [ "read", "list" ]
 }
 
-path "pki*" {
+path "connect_pki*" {
+  capabilities = [ "create", "read", "update", "delete", "list", "sudo" ]
+}
+
+path "tls_pki*" {
   capabilities = [ "create", "read", "update", "delete", "list", "sudo" ]
 }
