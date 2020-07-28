@@ -28,7 +28,7 @@ vault write connect_pki/config/urls issuing_certificates="http://127.0.0.1:8200/
 vault secrets enable -path=tls_pki pki && \
 vault secrets tune -max-lease-ttl=87600h tls_pki && \
 vault write -field=certificate tls_pki/root/generate/internal common_name="consul" ttl=87600h && \
-vault write pki/config/urls issuing_certificates="http://127.0.0.1:8200/v1/tls_pki/ca" crl_distribution_points="http://127.0.0.1:8200/v1/tls_pki/crl" && \
+vault write tls_pki/config/urls issuing_certificates="http://127.0.0.1:8200/v1/tls_pki/ca" crl_distribution_points="http://127.0.0.1:8200/v1/tls_pki/crl" && \
 vault secrets enable -path=tls_pki_int pki && \
 vault secrets tune -max-lease-ttl=43800h tls_pki_int && \
 vault write -format=json tls_pki_int/intermediate/generate/internal common_name="consul Intermediate Authority" alt_names="localhost,127.0.0.1" ip_sans="127.0.0.1" | jq -r '.data.csr' | tee tls_pki_intermediate.csr && \
