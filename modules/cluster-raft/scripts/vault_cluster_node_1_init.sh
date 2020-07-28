@@ -35,7 +35,7 @@ vault write -format=json tls_pki_int/intermediate/generate/internal common_name=
 vault write -format=json tls_pki/root/sign-intermediate csr=@tls_pki_intermediate.csr format=pem_bundle ttl="43800h" | jq -r '.data.certificate' | tee intermediate.cert.pem && \
 vault write tls_pki_int/intermediate/set-signed certificate=@intermediate.cert.pem && \
 vault write tls_pki_int/roles/consul allowed_domains="consul,127.0.0.1" allow_subdomains=true max_ttl="720h" && \
-vault write tls_pki_int/roles/nomad allowed_domains="nomad.global,127.0.0.1" allow_subdomains=true max_ttl="720h" && \
+vault write tls_pki_int/roles/nomad allowed_domains="nomad,127.0.0.1" allow_subdomains=true max_ttl="720h" && \
 rm tls_pki_intermediate.csr intermediate.cert.pem
 
 ##### this in the oven, look at consul tmpl #####
