@@ -29,7 +29,7 @@ template {
 template {
   source      = "/etc/consul.d/cert.tmpl"
   destination = "/etc/consul.d/cert"
-  command     = "sh -c 'sudo systemctl start consul && sudo systemctl reload consul'"
+  #command     = "sh -c 'sudo systemctl start consul && sudo systemctl reload consul'"
 }
 
 template {
@@ -50,7 +50,7 @@ template {
 template {
   source      = "/etc/nomad.d/nomad_cert.tmpl"
   destination = "/etc/nomad.d/nomad_cert"
-  command     = "sh -c 'sudo systemctl start nomad && sudo systemctl reload nomad'"
+  #command     = "sh -c 'sudo systemctl start nomad && sudo systemctl reload nomad'"
 }
 
 template {
