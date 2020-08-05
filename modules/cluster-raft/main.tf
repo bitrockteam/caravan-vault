@@ -19,12 +19,15 @@ resource "null_resource" "vault_cluster_node_config" {
       ${templatefile(
     "${path.module}/unseal-${var.unseal_type}.hcl.tpl",
     {
-      unseal_region              = var.unseal_region
-      unseal_keyring             = var.unseal_keyring
-      unseal_key                 = var.unseal_key
-      unseal_crypto_endpoint     = var.unseal_crypto_endpoint
-      unseal_management_endpoint = var.unseal_management_endpoint
-      project_id                 = var.unseal_project_id
+      unseal_region                = var.unseal_region
+      unseal_keyring               = var.unseal_keyring
+      unseal_key                   = var.unseal_key
+      unseal_crypto_endpoint       = var.unseal_crypto_endpoint
+      unseal_management_endpoint   = var.unseal_management_endpoint
+      unseal_transit_vault_address = var.unseal_transit_vault_address
+      unseal_transit_mount_path    = var.unseal_transit_mount_path
+      unseal_transit_vault_token   = var.unseal_transit_vault_token
+      project_id                   = var.unseal_project_id
     }
 )}
     EOT
@@ -68,7 +71,7 @@ resource "null_resource" "vault_cluster_node_1_init" {
       user                = var.ssh_user
       timeout             = var.ssh_timeout
       private_key         = var.ssh_private_key
-      host                = var.cluster_nodes_public_ips[keys(var.cluster_nodes)[0]]
+      host                = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[keys(var.cluster_nodes)[0]] : var.cluster_nodes[keys(var.cluster_nodes)[0]]
       bastion_host        = var.ssh_bastion_host
       bastion_port        = var.ssh_bastion_port
       bastion_private_key = var.ssh_bastion_private_key
@@ -92,7 +95,10 @@ resource "null_resource" "copy_root_token" {
     null_resource.vault_cluster_node_1_init
   ]
   provisioner "local-exec" {
-    command = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${path.module}/.ssh-key ${var.ssh_user}@${var.cluster_nodes_public_ips[keys(var.cluster_nodes)[0]]} 'sudo cat /root/root_token' > .root_token"
+    environment = {
+      SOURCE_HOST = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[keys(var.cluster_nodes)[0]] : var.cluster_nodes[keys(var.cluster_nodes)[0]]
+    }
+    command = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${path.module}/.ssh-key ${var.ssh_user}@$SOURCE_HOST 'sudo cat /root/root_token' > .root_token"
   }
   provisioner "local-exec" {
     command = "rm ${path.module}/.ssh-key"
@@ -115,7 +121,7 @@ resource "null_resource" "vault_cluster_node_not_1_init" {
       user                = var.ssh_user
       timeout             = var.ssh_timeout
       private_key         = var.ssh_private_key
-      host                = var.cluster_nodes_public_ips[keys(var.cluster_nodes)[count.index + 1]]
+      host                = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[keys(var.cluster_nodes)[count.index + 1]] : var.cluster_nodes[keys(var.cluster_nodes)[count.index + 1]]
       bastion_host        = var.ssh_bastion_host
       bastion_port        = var.ssh_bastion_port
       bastion_private_key = var.ssh_bastion_private_key

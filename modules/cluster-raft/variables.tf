@@ -87,3 +87,19 @@ variable "unseal_management_endpoint" {
   default     = null
   description = "(optional) The OCI Vault management endpoint"
 }
+
+variable "unseal_transit_vault_address" {
+  type        = string
+  default     = null
+  description = "(optional) The Vault address for transit auto unseal"
+}
+variable "unseal_transit_mount_path" {
+  type        = string
+  default     = null
+  description = "(optional) The Vault transit engine mount path for transit auto unseal"
+}
+variable "unseal_transit_vault_token" {
+  type        = string
+  default     = null
+  description = "(optional) The Vault token to access transit engine mount path for transit auto unseal"
+}
