@@ -23,22 +23,30 @@ resource "null_resource" "vault_gcp_agent_config" {
 )}
     EOT
 connection {
-  type        = "ssh"
-  user        = var.ssh_user
-  private_key = var.ssh_private_key
-  timeout     = var.ssh_timeout
-  host        = var.nodes_public_ips != null ? var.nodes_public_ips[keys(var.nodes_public_ips)[count.index]] : var.nodes[keys(var.nodes)[count.index]]
+  type                = "ssh"
+  user                = var.ssh_user
+  private_key         = var.ssh_private_key
+  timeout             = var.ssh_timeout
+  host                = var.nodes_public_ips != null ? var.nodes_public_ips[keys(var.nodes_public_ips)[count.index]] : var.nodes[keys(var.nodes)[count.index]]
+  bastion_host        = var.ssh_bastion_host
+  bastion_port        = var.ssh_bastion_port
+  bastion_private_key = var.ssh_bastion_private_key
+  bastion_user        = var.ssh_bastion_user
 }
 }
 
 provisioner "remote-exec" {
   inline = ["sudo mv /tmp/agent.hcl /etc/vault.d/agent.hcl && sudo systemctl restart vault-agent"]
   connection {
-    type        = "ssh"
-    user        = var.ssh_user
-    timeout     = var.ssh_timeout
-    private_key = var.ssh_private_key
-    host        = var.nodes_public_ips != null ? var.nodes_public_ips[keys(var.nodes_public_ips)[count.index]] : var.nodes[keys(var.nodes)[count.index]]
+    type                = "ssh"
+    user                = var.ssh_user
+    timeout             = var.ssh_timeout
+    private_key         = var.ssh_private_key
+    host                = var.nodes_public_ips != null ? var.nodes_public_ips[keys(var.nodes_public_ips)[count.index]] : var.nodes[keys(var.nodes)[count.index]]
+    bastion_host        = var.ssh_bastion_host
+    bastion_port        = var.ssh_bastion_port
+    bastion_private_key = var.ssh_bastion_private_key
+    bastion_user        = var.ssh_bastion_user
   }
 }
 }

@@ -45,7 +45,8 @@ variable "nodes" {
 }
 variable "nodes_public_ips" {
   type        = map(any)
-  description = "(required) map of node => public ip"
+  default     = null
+  description = "(optional) map of node => public ip"
 }
 
 variable "ssh_private_key" {
@@ -58,4 +59,20 @@ variable "ssh_user" {
 variable "ssh_timeout" {
   type    = string
   default = "60s"
+}
+variable "ssh_bastion_host" {
+  type    = string
+  default = null
+}
+variable "ssh_bastion_port" {
+  type    = string
+  default = "22"
+}
+variable "ssh_bastion_private_key" {
+  type    = string
+  default = null
+}
+variable "ssh_bastion_user" {
+  type    = string
+  default = null
 }
