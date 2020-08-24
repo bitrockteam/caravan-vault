@@ -35,6 +35,23 @@ variable "gcp_project_id" {
   description = "(optional) The GCP Project ID"
 }
 
+variable "oci_auto_auth" {
+  type        = bool
+  default     = false
+  description = "(optional) Should agent auto authenticate via OCI's IAM"
+}
+variable "oci_node_role" {
+  type        = string
+  default     = null
+  description = "(optional) Configured OCI role of the node"
+}
+
+variable "approle_auto_auth" {
+  type        = bool
+  default     = false
+  description = "(optional) Should agent auto authenticate via AppRole"
+}
+
 variable "nodes_ids" {
   type        = list(string)
   description = "(required) IDs of nodes to trigger reprovision of agents"
