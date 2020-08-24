@@ -43,10 +43,11 @@ resource "vault_jwt_auth_backend" "gsuite" {
 }
 
 resource "vault_jwt_auth_backend_role" "gsuite_default_role" {
-  backend         = vault_jwt_auth_backend.gsuite[0].path
-  role_name       = var.gsuite_default_role
+  count           = var.gsuite_authenticate ? 1 : 0
+  backend         = var.gsuite_authenticate ? vault_jwt_auth_backend.gsuite[0].path : null
+  role_name       = var.gsuite_authenticate ? var.gsuite_default_role : ""
   token_policies  = var.gsuite_default_role_policies
-  bound_audiences = [var.gsuite_client_id]
+  bound_audiences = var.gsuite_authenticate ? [var.gsuite_client_id] : []
 
   user_claim = "sub"
   role_type  = "oidc"
