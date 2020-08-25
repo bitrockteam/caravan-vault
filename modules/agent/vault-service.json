@@ -1,0 +1,17 @@
+{
+    "service": {
+        "id": "vault_agent",
+        "name": "Vault Agent",
+        "port": 9200,
+        "meta": {
+            "external-source": "terraform"
+        },
+        "checks": [{
+            "id": "vault_http",
+            "name": "HTTP API on port 8200",
+            "http": "http://localhost:8200/v1/sys/health?standbyok=true",
+            "interval": "15s",
+            "timeout": "5s"
+        }]
+    }
+}

@@ -30,6 +30,7 @@ resource "null_resource" "vault_cluster_node_config" {
       project_id                   = var.unseal_project_id
     }
 )}
+
     EOT
 connection {
   type                = "ssh"

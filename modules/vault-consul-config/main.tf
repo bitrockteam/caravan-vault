@@ -20,20 +20,20 @@ resource "vault_consul_secret_backend_role" "agent_node_role" {
 }
 
 resource "consul_acl_policy" "cluster_node_agent_policy" {
-  name        = "consul-agent-role"
-  rules       = file("${path.module}/acls/cluster-node-agent.hcl")
+  name  = "consul-agent-role"
+  rules = file("${path.module}/acls/cluster-node-agent.hcl")
 }
 resource "consul_acl_policy" "nomad_server_policy" {
-  name        = "nomad-server"
-  rules       = file("${path.module}/acls/nomad-server.hcl")
+  name  = "nomad-server"
+  rules = file("${path.module}/acls/nomad-server.hcl")
 }
 resource "consul_acl_policy" "nomad_client_policy" {
-  name        = "nomad-client"
-  rules       = file("${path.module}/acls/nomad-client.hcl")
+  name  = "nomad-client"
+  rules = file("${path.module}/acls/nomad-client.hcl")
 }
 resource "consul_acl_policy" "ui_policy" {
-  name        = "ui-policy"
-  rules       = file("${path.module}/acls/operator-ui.hcl")
+  name  = "ui-policy"
+  rules = file("${path.module}/acls/operator-ui.hcl")
 }
 
 resource "consul_acl_token_policy_attachment" "cluster_node_agent_token" {
@@ -41,21 +41,21 @@ resource "consul_acl_token_policy_attachment" "cluster_node_agent_token" {
     consul_acl_policy.cluster_node_agent_policy,
   ]
   token_id = data.vault_generic_secret.consul_bootstrap_token.data["accessorid"]
-  policy = consul_acl_policy.cluster_node_agent_policy.name
+  policy   = consul_acl_policy.cluster_node_agent_policy.name
 }
 
 
 resource "consul_acl_token" "ui_token" {
   description = "ui policy token"
-  policies = ["${consul_acl_policy.ui_policy.name}"]
+  policies    = ["${consul_acl_policy.ui_policy.name}"]
 }
 resource "consul_acl_token" "nomad_server_token" {
   description = "nomad server policy token"
-  policies = ["${consul_acl_policy.nomad_server_policy.name}"]
+  policies    = ["${consul_acl_policy.nomad_server_policy.name}"]
 }
 resource "consul_acl_token" "nomad_client_token" {
   description = "nomad client policy token"
-  policies = ["${consul_acl_policy.nomad_client_policy.name}"]
+  policies    = ["${consul_acl_policy.nomad_client_policy.name}"]
 }
 
 data "consul_acl_token_secret_id" "ui_token" {
@@ -100,58 +100,3 @@ resource "vault_generic_secret" "nomad_server_token" {
 EOT
 }
 
-
-
-resource "consul_service" "consul_servers" {
-  count = 3
-  name    = "consul-node0${count.index + 1}"
-  node    = "clustnode0${count.index + 1}"
-  port    = 8300
-  tags    = ["consul", "server"]
-  check {
-    check_id                          = "service:consul-node0${count.index + 1}"
-    name                              = "Consul health check"
-    status                            = "passing"
-    tcp                               = "127.0.0.1:8300"
-    tls_skip_verify                   = false
-    interval                          = "10s"
-    timeout                           = "5s"
-  }
-}
-
-
-resource "consul_service" "dnsmasq_clusternode" {
-  count = 3
-  name    = "dnsmasq_clusternode0${count.index + 1}"
-  node    = "clustnode0${count.index + 1}"
-  port    = 53
-  tags    = ["dnsmasq"]
-  check {
-    # nslookup soa consul
-    check_id                          = "service:dnsmasq0${count.index + 1}"
-    name                              = "DNSmasq health check"
-    status                            = "passing"
-    tcp                               = "127.0.0.1:53"
-    tls_skip_verify                   = false
-    interval                          = "10s"
-    timeout                           = "5s"
-    deregister_critical_service_after = "30s"
-  }
-}
-
-resource "consul_service" "vault" {
-  count = 3
-  name    = "vault0${count.index + 1}"
-  node    = "clustnode0${count.index + 1}"
-  port    = 8200
-  tags    = ["vault"]
-  check {
-    check_id                          = "service:vault0${count.index + 1}"
-    name                              = "Vault health check"
-    status                            = "passing"
-    tcp                               = "127.0.0.1:8200"
-    tls_skip_verify                   = false
-    interval                          = "10s"
-    timeout                           = "5s"
-  }
-}
