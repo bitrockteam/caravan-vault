@@ -1,4 +1,3 @@
-
 resource "null_resource" "vault_gcp_agent_config" {
   count = var.gcp_auto_auth ? length(var.nodes) : 0
   triggers = {
@@ -52,7 +51,9 @@ provisioner "remote-exec" {
 }
 
 resource "null_resource" "vault_oci_agent_config" {
-  count = var.oci_auto_auth ? length(var.nodes) : 0
+  # count = var.oci_auto_auth ? length(var.nodes) : 0
+  # disabled because agent does not know to authenticate with oci 🤷
+  count = 0
   triggers = {
     ids = join("-", var.nodes_ids)
   }
@@ -99,6 +100,45 @@ provisioner "remote-exec" {
     bastion_user        = var.ssh_bastion_user
   }
 }
+}
+resource "null_resource" "vault_oci_agent_hook" {
+  count = var.oci_auto_auth ? length(var.nodes) : 0
+  # this is an ugly workaround to make the agent work with OCI IAM
+  triggers = {
+    ids = join("-", var.nodes_ids)
+  }
+  provisioner "file" {
+    destination = "/tmp/vault-agent.env"
+    content     = <<-EOT
+    VAULT_ADDR=http://127.0.0.1:8200
+    OCI_AUTHENTICATE_APPROLE=pocnode
+    EOT
+    connection {
+      type                = "ssh"
+      user                = var.ssh_user
+      private_key         = var.ssh_private_key
+      timeout             = var.ssh_timeout
+      host                = var.nodes_public_ips != null ? var.nodes_public_ips[keys(var.nodes_public_ips)[count.index]] : var.nodes[keys(var.nodes)[count.index]]
+      bastion_host        = var.ssh_bastion_host
+      bastion_port        = var.ssh_bastion_port
+      bastion_private_key = var.ssh_bastion_private_key
+      bastion_user        = var.ssh_bastion_user
+    }
+  }
+  provisioner "remote-exec" {
+    inline = ["sudo mv /tmp/vault-agent.env /etc/vault.d/agent.env"]
+    connection {
+      type                = "ssh"
+      user                = var.ssh_user
+      private_key         = var.ssh_private_key
+      timeout             = var.ssh_timeout
+      host                = var.nodes_public_ips != null ? var.nodes_public_ips[keys(var.nodes_public_ips)[count.index]] : var.nodes[keys(var.nodes)[count.index]]
+      bastion_host        = var.ssh_bastion_host
+      bastion_port        = var.ssh_bastion_port
+      bastion_private_key = var.ssh_bastion_private_key
+      bastion_user        = var.ssh_bastion_user
+    }
+  }
 }
 
 resource "null_resource" "vault_approle_agent_config" {
