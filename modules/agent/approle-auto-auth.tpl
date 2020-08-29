@@ -11,4 +11,10 @@ auto_auth {
       path = "/etc/consul.d/vault_token"
     }
   }
+  sink {
+    type = "file"
+    config = {
+      path = "/etc/nomad.d/vault_token"
+    }
+  }
 }
