@@ -2,7 +2,9 @@
 path "consul/creds/consul-agent-role" {
   capabilities = ["read"]
 }
-
+path "consul/creds/consul-esm-role" {
+  capabilities = ["read"]
+}
 path "secret/data/consul/nomad_server_token" {
   capabilities = ["read"]
 }

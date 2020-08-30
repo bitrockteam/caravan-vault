@@ -15,8 +15,16 @@ resource "vault_consul_secret_backend_role" "agent_node_role" {
   backend = vault_consul_secret_backend.consul_backend.path
 
   policies = [
-    "consul-agent-role",
-    "consul-esm"
+    "consul-agent-role"
+  ]
+}
+
+resource "vault_consul_secret_backend_role" "esm_node" {
+  name    = "consul-esm-role"
+  backend = vault_consul_secret_backend.consul_backend.path
+
+  policies = [
+    "consul-esm-role"
   ]
 }
 
