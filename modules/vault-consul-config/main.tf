@@ -16,12 +16,17 @@ resource "vault_consul_secret_backend_role" "agent_node_role" {
 
   policies = [
     "consul-agent-role",
+    "consul-esm"
   ]
 }
 
 resource "consul_acl_policy" "cluster_node_agent_policy" {
   name  = "consul-agent-role"
   rules = file("${path.module}/acls/cluster-node-agent.hcl")
+}
+resource "consul_acl_policy" "consul_esm_policy" {
+  name  = "consul-esm-role"
+  rules = file("${path.module}/acls/consul-esm.hcl")
 }
 resource "consul_acl_policy" "nomad_server_policy" {
   name  = "nomad-server"
