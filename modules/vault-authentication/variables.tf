@@ -1,3 +1,7 @@
+variable "pre13_depends_on" {
+  type    = any
+  default = null
+}
 variable "vault_endpoint" {
   type    = string
   default = null

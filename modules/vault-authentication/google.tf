@@ -1,7 +1,8 @@
 resource "vault_auth_backend" "gcp" {
-  count = var.gcp_authenticate ? 1 : 0
-  type  = "gcp"
-  path  = "gcp"
+  depends_on = [var.pre13_depends_on]
+  count      = var.gcp_authenticate ? 1 : 0
+  type       = "gcp"
+  path       = "gcp"
 }
 
 resource "vault_gcp_auth_backend_role" "gcp-cluster-node" {

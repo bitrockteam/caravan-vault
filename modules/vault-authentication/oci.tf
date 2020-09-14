@@ -4,6 +4,7 @@ resource "vault_auth_backend" "oci" {
   path  = "oci"
 }
 resource "null_resource" "oci_auth_config" {
+  count      = var.oci_authenticate ? 1 : 0
   depends_on = [vault_auth_backend.oci[0]]
   provisioner "local-exec" {
     command = "vault write -address ${var.vault_endpoint} auth/oci/config home_tenancy_id=${var.oci_home_tenancy_id}"
