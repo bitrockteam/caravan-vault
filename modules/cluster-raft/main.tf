@@ -105,7 +105,7 @@ resource "null_resource" "copy_root_token" {
     environment = {
       SOURCE_HOST = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[keys(var.cluster_nodes)[0]] : var.cluster_nodes[keys(var.cluster_nodes)[0]]
     }
-    command = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${path.module}/.ssh-key ${var.ssh_user}@$SOURCE_HOST 'sudo cat /root/.lb-cert.json' > .lb-cert.json"
+    command = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${path.module}/.ssh-key ${var.ssh_user}@$SOURCE_HOST 'sudo cat /root/.lb-cert.json' | sudo jq .'certificate' > .lb-cert.json && sudo cat /root/.lb-cert.json' | sudo jq .'private_key' > .lb-key.json && sudo cat /root/.lb-cert.json' | sudo jq .'issuing_ca' > .lb-ca.json"
   }
   provisioner "local-exec" {
     command = "rm ${path.module}/.ssh-key"
