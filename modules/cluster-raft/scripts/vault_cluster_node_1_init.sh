@@ -16,7 +16,7 @@ vault secrets enable -path=secret kv-v2 && \
 vault secrets enable -path=tls_pki pki && \
 vault secrets tune -max-lease-ttl=8760h tls_pki && \
 vault write tls_pki/roles/lb_certificate allowed_domains="hcpoc.bitrock.it" allow_subdomains=true allow_glob_domains=true max_ttl=8760h && \
-vault write --format=json tls_pki/issue/lb_certificate common_name=*.hcpoc.bitrock.it | jq '.data | {issuing_ca: .issuing_ca, private_key: .private_key, certificate: .certificate}' > lb-cert.json && \
+vault write --format=json tls_pki/issue/lb_certificate common_name=*.hcpoc.bitrock.it | jq '.data | {issuing_ca: .issuing_ca, private_key: .private_key, certificate: .certificate}' > .lb-cert.json && \
 vault write -field=certificate tls_pki/root/generate/internal common_name="consul" ttl=8760h && \
 vault write tls_pki/config/urls issuing_certificates="http://127.0.0.1:8200/v1/tls_pki/ca" crl_distribution_points="http://127.0.0.1:8200/v1/tls_pki/crl" && \
 vault secrets enable -path=tls_pki_int pki && \
