@@ -65,8 +65,26 @@ resource "null_resource" "vault_cluster_node_1_init" {
   triggers = {
     nodes = (length(null_resource.vault_cluster_node_config) > 0 ? null_resource.vault_cluster_node_config[keys(null_resource.vault_cluster_node_config)[0]].id : null)
   }
+  provisioner "file" {
+    source = "${path.module}/scripts/vault_cluster_node_1_init.sh"
+    destination = "/tmp/vault_cluster_node_1_init.sh"
+    connection {
+      type                = "ssh"
+      user                = var.ssh_user
+      timeout             = var.ssh_timeout
+      private_key         = var.ssh_private_key
+      host                = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[keys(var.cluster_nodes)[0]] : var.cluster_nodes[keys(var.cluster_nodes)[0]]
+      bastion_host        = var.ssh_bastion_host
+      bastion_port        = var.ssh_bastion_port
+      bastion_private_key = var.ssh_bastion_private_key
+      bastion_user        = var.ssh_bastion_user
+    }
+  }
   provisioner "remote-exec" {
-    script = "${path.module}/scripts/vault_cluster_node_1_init.sh"
+    inline = [
+      "chmod +x /tmp/vault_cluster_node_1_init.sh",
+      "/tmp/vault_cluster_node_1_init.sh external_domain=${var.external_domain}"
+    ]
     connection {
       type                = "ssh"
       user                = var.ssh_user

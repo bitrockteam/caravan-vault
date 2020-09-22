@@ -1,3 +1,7 @@
+variable "external_domain" {
+  type = string
+  description = "(required) The base domain name used to reach load balancer exposed services (e.g. hcpoc.bitrock.it to reach vault.hcpoc.bitrock.it)"
+}
 variable "cluster_nodes" {
   type = map(any)
 }
