@@ -1,6 +1,6 @@
 #!/bin/bash
 for arg in $@; do
-  [[ $arg =~ ^[a-z0-9]+=.*$ ]] && export $arg
+  [[ $arg =~ ^[a-z_]+=.*$ ]] && export $arg
 done
 [ -z $external_domain ] && { echo "Provide external_domain=<domain is here> argument"; exit 1; }
 set -e
