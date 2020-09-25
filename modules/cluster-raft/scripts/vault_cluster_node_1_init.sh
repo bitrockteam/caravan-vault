@@ -31,7 +31,7 @@ vault write tls_pki/config/urls issuing_certificates="http://127.0.0.1:8200/v1/t
 # generate LB certificates for provided CN
 vault write --format=json tls_pki/issue/lb_certificate common_name=*.$external_domain | jq '.data | {issuing_ca: .issuing_ca, private_key: .private_key, certificate: .certificate}' | sudo tee /root/lb-certs.json && \
 # put certs in kv store
-vault kv put secret/lb-certificates @lb-certs.json && \
+vault kv put secret/lb-certificates @/root/lb-certs.json && \
 # enable another pki, acting as intermediate CA
 vault secrets enable -path=tls_pki_int pki && \
 # tune TTL
