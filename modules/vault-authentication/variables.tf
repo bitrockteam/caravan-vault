@@ -11,10 +11,13 @@ variable "gcp_authenticate" {
   type    = bool
   default = false
 }
-
 variable "gcp_authenticate_admin_group_name" {
   type    = string
   default = null
+}
+variable "gcp_csi" {
+  type    = bool
+  default = false
 }
 variable "gcp_cluster_node_service_account" {
   type    = string
