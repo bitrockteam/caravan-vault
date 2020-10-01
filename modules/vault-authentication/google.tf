@@ -77,7 +77,7 @@ data "google_service_account" "pd_csi_sa" {
 
 resource "google_service_account_key" "pd_csi_sa_key" {
   count              = var.gcp_csi ? 1 : 0
-  service_account_id = data.google_service_account.pd_csi_sa.name
+  service_account_id = data.google_service_account.pd_csi_sa[0].name
 }
 
 resource "vault_generic_secret" "pd_csi_sa_credential" {
@@ -85,6 +85,6 @@ resource "vault_generic_secret" "pd_csi_sa_credential" {
   path       = "/secret/gcp/pd_csi_sa_credential"
   depends_on = [google_service_account_key.pd_csi_sa_key]
   data_json = jsonencode({
-    "credential_json": "${base64decode(google_service_account_key.pd_csi_sa_key.private_key)}"
+    "credential_json": "${base64decode(google_service_account_key.pd_csi_sa_key[0].private_key)}"
   })
 }
