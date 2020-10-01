@@ -13,6 +13,10 @@ path "secret/data/consul/nomad_client_token" {
   capabilities = ["read"]
 }
 
+path "secret/data/gcp/pd_csi_sa_credential" {
+  capabilities = ["read"]
+}
+
 path "sys/mounts/*" {
   capabilities = [ "sudo", "create", "read", "update", "delete", "list" ]
 }
