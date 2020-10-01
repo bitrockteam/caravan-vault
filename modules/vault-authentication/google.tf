@@ -81,9 +81,7 @@ resource "google_service_account_key" "pd_csi_sa_key" {
 resource "vault_generic_secret" "pd_csi_sa_credential" {
   path       = "/secret/gcp/pd_csi_sa_credential"
   depends_on = [google_service_account_key.pd_csi_sa_key]
-  data_json = <<EOT
-{
-    "credential_json": "${credentialsbase64decode(google_service_account_key.pd_csi_sa_key.private_key)}"
-}
-EOT
+  data_json = jsonencode({
+    "credential_json": "${base64decode(google_service_account_key.pd_csi_sa_key.private_key)}"
+  })
 }
