@@ -66,7 +66,7 @@ resource "null_resource" "vault_cluster_node_1_init" {
     nodes = (length(null_resource.vault_cluster_node_config) > 0 ? null_resource.vault_cluster_node_config[keys(null_resource.vault_cluster_node_config)[0]].id : null)
   }
   provisioner "file" {
-    source = "${path.module}/scripts/vault_cluster_node_1_init.sh"
+    source      = "${path.module}/scripts/vault_cluster_node_1_init.sh"
     destination = "/tmp/vault_cluster_node_1_init.sh"
     connection {
       type                = "ssh"
