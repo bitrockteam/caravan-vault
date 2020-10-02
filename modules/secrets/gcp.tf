@@ -14,11 +14,11 @@ resource "google_service_account_key" "pd_csi_sa_key" {
   service_account_id = data.google_service_account.pd_csi_sa[0].name
 }
 
-resource "vault_generic_secret" "pd_csi_sa_credential" {
+resource "vault_generic_secret" "pd_csi_sa_credentials" {
   count      = var.gcp_csi ? 1 : 0
-  path       = "secret/gcp/pd_csi_sa_credential"
+  path       = "secret/gcp/pd_csi_sa_credentials"
   depends_on = [google_service_account_key.pd_csi_sa_key]
   data_json = jsonencode({
-    "credential_json": "${base64decode(google_service_account_key.pd_csi_sa_key[0].private_key)}"
+    "credentials_json": "${base64decode(google_service_account_key.pd_csi_sa_key[0].private_key)}"
   })
 }
