@@ -13,7 +13,7 @@ path "secret/data/consul/nomad_client_token" {
   capabilities = ["read"]
 }
 
-path "secret/data/gcp/pd_csi_sa_credential" {
+path "secret/data/gcp/pd_csi_sa_credentials" {
   capabilities = ["read"]
 }
 
