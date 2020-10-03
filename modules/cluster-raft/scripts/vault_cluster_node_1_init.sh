@@ -2,7 +2,7 @@
 for arg in $@; do
   [[ $arg =~ ^[a-z_]+=.*$ ]] && export $arg
 done
-[ -z $external_domain ] && { echo "Provide external_domain=<domain is here> argument"; exit 1; }
+
 set -e
 sudo ls -la /etc/vault.d/
 sudo systemctl start vault && \
@@ -22,16 +22,10 @@ vault secrets enable -path=secret kv-v2 && \
 vault secrets enable -path=tls_pki pki && \
 # tune TTL
 vault secrets tune -max-lease-ttl=8760h tls_pki && \
-# create roles for LB certificates
-vault write tls_pki/roles/lb_certificate allowed_domains="$external_domain" allow_subdomains=true allow_glob_domains=true max_ttl=8760h && \
 # generate CA for Consul
 vault write -field=certificate tls_pki/root/generate/internal common_name="consul" ttl=8760h && \
 # generate Consul CA issuing urls
 vault write tls_pki/config/urls issuing_certificates="http://127.0.0.1:8200/v1/tls_pki/ca" crl_distribution_points="http://127.0.0.1:8200/v1/tls_pki/crl" && \
-# generate LB certificates for provided CN
-vault write --format=json tls_pki/issue/lb_certificate common_name=*.$external_domain | jq '.data | {issuing_ca: .issuing_ca, private_key: .private_key, certificate: .certificate}' | sudo tee /root/lb-certs.json && \
-# put certs in kv store
-sudo cp /root/lb-certs.json . && sudo chown vault:vault lb-certs.json && vault kv put secret/lb-certificates @lb-certs.json && rm -rf lb-certs.json && \
 # enable another pki, acting as intermediate CA
 vault secrets enable -path=tls_pki_int pki && \
 # tune TTL
