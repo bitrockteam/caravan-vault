@@ -83,7 +83,7 @@ resource "null_resource" "vault_cluster_node_1_init" {
   provisioner "remote-exec" {
     inline = [
       "chmod +x /tmp/vault_cluster_node_1_init.sh",
-      "/tmp/vault_cluster_node_1_init.sh external_domain=${var.external_domain}"
+      "/tmp/vault_cluster_node_1_init.sh"
     ]
     connection {
       type                = "ssh"
