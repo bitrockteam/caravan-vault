@@ -1,9 +1,3 @@
-provider "google" {
-  region      = var.gcp_region
-  project     = var.gcp_project_id
-  credentials = var.google_account_file != null ? file(var.google_account_file) : null
-}
-
 data "google_service_account" "pd_csi_sa" {
   count      = var.gcp_csi ? 1 : 0
   account_id   = "pd-csi-sa-${replace(var.gcp_project_id, "/(-[0-9]+)/", "")}"
