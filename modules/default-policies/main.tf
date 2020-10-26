@@ -13,6 +13,11 @@ resource "vault_policy" "nomad_cluster" {
   policy = file("${path.module}/policies/nomad-server-policy.hcl")
 }
 
+resource "vault_policy" "nomad_token_manager" {
+  name   = "nomad-token-manager"
+  policy = file("${path.module}/policies/nomad-token-manager.hcl")
+}
+
 resource "vault_token_auth_backend_role" "nomad-cluster" {
   role_name                 = "nomad-cluster"
   disallowed_policies       = ["nomad-server"]
