@@ -17,6 +17,8 @@ sleep 10s
 export VAULT_TOKEN=`sudo cat /root/root_token` VAULT_ADDR=http://127.0.0.1:8200 && \
 #### enable kv secret engine (version 2)
 vault secrets enable -path=secret kv-v2 && \
+#### enable nomad secret engine
+vault secrets enable nomad && \
 #### consul/connect/nomad pki
 # enable pki
 vault secrets enable -path=tls_pki pki && \
