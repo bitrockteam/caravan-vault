@@ -113,3 +113,7 @@ resource "vault_generic_secret" "nomad_server_token" {
 EOT
 }
 
+# data "vault_generic_secret" "nomad_management" {
+#   path = "nomad/creds/token-manager"
+# }
+
