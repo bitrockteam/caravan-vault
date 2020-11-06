@@ -1,8 +1,8 @@
-path "auth/token/create/nomad-cluster" {
+path "auth/token/create/cluster-node" {
   capabilities = ["update"]
 }
 
-path "auth/token/roles/nomad-cluster" {
+path "auth/token/roles/cluster-node" {
   capabilities = ["read"]
 }
 
