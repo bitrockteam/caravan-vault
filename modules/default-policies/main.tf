@@ -35,13 +35,3 @@ resource "vault_policy" "nomad_anon_restricted" {
   name   = "nomad-anon-restricted"
   policy = file("${path.module}/policies/nomad-anon-restricted.hcl")
 }
-
-resource "vault_token_auth_backend_role" "nomad-cluster" {
-  role_name                 = "nomad-cluster"
-  allowed_policies          = ["nomad-app-devs-volumes-policy"]
-  disallowed_policies       = ["nomad-server"]
-  orphan                    = true
-  token_period              = "259200"
-  renewable                 = true
-  token_explicit_max_ttl    = "0"
-}

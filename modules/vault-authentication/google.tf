@@ -13,7 +13,10 @@ resource "vault_gcp_auth_backend_role" "gcp-cluster-node" {
   bound_service_accounts = ["${var.gcp_cluster_node_service_account}@${var.gcp_project_id}.iam.gserviceaccount.com"]
   token_policies         = [
     "consul-agent-role", 
-    "nomad-server"
+    "nomad-server",
+    "nomad-app-devs-volumes",
+    "nomad-app-devs",
+    "nomad-ops"
   ]
   role                   = "cluster-node"
   type                   = "iam"
@@ -26,7 +29,12 @@ resource "vault_gcp_auth_backend_role" "gcp-worker-node" {
   backend                = vault_auth_backend.gcp[0].path
   bound_projects         = [var.gcp_project_id]
   bound_service_accounts = var.gcp_worker_node_service_accounts
-  token_policies         = ["consul-agent-role"]
+  token_policies         = [
+    "consul-agent-role",
+    "nomad-app-devs-volumes",
+    "nomad-app-devs",
+    "nomad-ops"
+  ]
   role                   = "worker-node"
   type                   = "iam"
   allow_gce_inference    = true

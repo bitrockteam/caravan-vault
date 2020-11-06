@@ -25,3 +25,7 @@ path "sys/capabilities-self" {
 path "auth/token/renew-self" {
   capabilities = ["update"]
 }
+
+path "secret/data/nomad/nomad_server_token" {
+  capabilities = ["read"]
+}
