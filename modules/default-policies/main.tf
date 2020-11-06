@@ -15,23 +15,23 @@ resource "vault_policy" "nomad_cluster" {
 
 resource "vault_policy" "nomad_token_manager" {
   name   = "nomad-token-manager"
-  policy = file("${path.module}/policies/nomad-token-manager.hcl")
+  policy = file("${path.module}/policies/nomad-token-manager-policy.hcl")
 }
 
 resource "vault_policy" "nomad_app_devs_volumes" {
   name   = "nomad-app-devs-volumes"
-  policy = file("${path.module}/policies/nomad-app-devs-volumes.hcl")
+  policy = file("${path.module}/policies/nomad-app-devs-volumes-policy.hcl")
 }
 resource "vault_policy" "nomad_app_devs" {
   name   = "nomad-app-devs"
-  policy = file("${path.module}/policies/nomad-app-devs.hcl")
+  policy = file("${path.module}/policies/nomad-app-devs-policy.hcl")
 }
 resource "vault_policy" "nomad_ops" {
   name   = "nomad-ops"
-  policy = file("${path.module}/policies/nomad-ops.hcl")
+  policy = file("${path.module}/policies/nomad-ops-policy.hcl")
 }
 
 resource "vault_policy" "nomad_anon_restricted" {
   name   = "nomad-anon-restricted"
-  policy = file("${path.module}/policies/nomad-anon-restricted.hcl")
+  policy = file("${path.module}/policies/nomad-anon-restricted-policy.hcl")
 }
