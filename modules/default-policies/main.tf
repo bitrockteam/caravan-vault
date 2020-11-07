@@ -38,7 +38,7 @@ resource "vault_policy" "nomad_anon_restricted" {
 
 resource "vault_token_auth_backend_role" "nomad-cluster-node" {
   role_name                 = "cluster-node"
-  allowed_policies          = [ "nomad-app-devs-volumes-policy", "nomad-ops"]
+  allowed_policies          = [ "nomad-app-devs-volumes", "nomad-ops" ]
   orphan                    = true
   token_period              = "259200"
   renewable                 = true
