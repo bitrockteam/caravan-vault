@@ -27,7 +27,8 @@ resource "vault_gcp_auth_backend_role" "gcp-worker-node" {
   bound_projects         = [var.gcp_project_id]
   bound_service_accounts = var.gcp_worker_node_service_accounts
   token_policies         = [
-    "consul-agent-role"
+    "consul-agent-role",
+    "nomad-app-devs-volumes"
   ]
   role                   = "worker-node"
   type                   = "iam"
