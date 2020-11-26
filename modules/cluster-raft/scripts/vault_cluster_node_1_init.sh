@@ -43,3 +43,5 @@ vault write tls_pki_int/roles/consul allowed_domains="consul,127.0.0.1" allow_su
 vault write tls_pki_int/roles/nomad allowed_domains="nomad,127.0.0.1" allow_subdomains=true max_ttl="720h" && \
 # clean up
 rm tls_pki_intermediate.csr intermediate.cert.pem
+# add counters
+vault write sys/internal/counters/config enabled=enable
