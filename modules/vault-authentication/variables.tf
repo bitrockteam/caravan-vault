@@ -82,3 +82,27 @@ variable "gsuite_allowed_redirect_uris" {
   type    = list(string)
   default = []
 }
+variable "aws_authenticate" {
+  type    = bool
+  default = false
+}
+variable "aws_region" {
+  type        = string
+  default     = null
+  description = "(optional) The AWS Region whose instances can authenticate"
+}
+variable "aws_vpc_id" {
+  type        = string
+  default     = null
+  description = "(optional) The AWS VPC ID whose instances can authenticate"
+}
+variable "aws_cluster_node_iam_role_arns" {
+  type        = list(string)
+  default     = []
+  description = "(optional) The list of AWS IAM Role ARNs that can authenticate as cluster nodes"
+}
+variable "aws_worker_node_iam_role_arns" {
+  type        = list(string)
+  default     = []
+  description = "(optional) The list of AWS IAM Role ARNs that can authenticate as worker nodes"
+}
