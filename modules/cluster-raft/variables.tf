@@ -40,6 +40,10 @@ variable "ssh_bastion_user" {
 variable "unseal_type" {
   type    = string
   default = "gcp"
+  validation {
+    condition = contains(set("gcp", "oci", "transit", "aws"), var.unseal_type)
+    error_message = "Unsupported unseal_type value. Supported values: gcp, oci, transit, aws."
+  }
 }
 variable "unseal_region" {
   type    = string
@@ -102,4 +106,29 @@ variable "unseal_transit_vault_token" {
   type        = string
   default     = null
   description = "(optional) The Vault token to access transit engine mount path for transit auto unseal"
+}
+variable "aws_kms_region" {
+  type = string
+  default = null
+  description = "(optional) The AWS KMS Region to use for AWS KMS auto unseal"
+}
+variable "aws_kms_key_id" {
+  type = string
+  default = null
+  description = "(optional) The AWS KMS Key ID to use for AWS KMS auto unseal"
+}
+variable "aws_access_key" {
+  type = string
+  default = null
+  description = "(optional) The AWS Access Key to use for AWS KMS auto unseal. Leave null for using AWS profile or instance profile"
+}
+variable "aws_secret_key" {
+  type = string
+  default = null
+  description = "(optional) The AWS Secret Key to use for AWS KMS auto unseal. Leave null for using AWS profile or instance profile"
+}
+variable "aws_endpoint" {
+  type = string
+  default = null
+  description = "(optional) The custom AWS VPC Endpoint to use for AWS KMS auto unseal"
 }
