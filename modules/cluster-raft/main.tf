@@ -28,6 +28,11 @@ resource "null_resource" "vault_cluster_node_config" {
       unseal_transit_mount_path    = var.unseal_transit_mount_path
       unseal_transit_vault_token   = var.unseal_transit_vault_token
       project_id                   = var.unseal_project_id
+      aws_kms_region               = var.aws_kms_region
+      aws_kms_key_id               = var.aws_kms_key_id
+      aws_access_key               = var.aws_access_key
+      aws_secret_key               = var.aws_secret_key
+      aws_endpoint                 = var.aws_endpoint
     }
 )}
 

@@ -188,3 +188,56 @@ provisioner "remote-exec" {
   }
 }
 }
+
+resource "null_resource" "vault_aws_agent_config" {
+  count = var.aws_auto_auth ? length(var.nodes) : 0
+  triggers = {
+    ids = join("-", var.nodes_ids)
+  }
+  provisioner "file" {
+    destination = "/tmp/agent.hcl"
+    content = <<-EOT
+      ${templatefile("${path.module}/agent.hcl.tpl",
+    {
+      vault_endpoint   = var.vault_endpoint
+      tcp_listener     = var.tcp_listener
+      tcp_listener_tls = var.tcp_listener_tls
+    }
+    )}
+      ${templatefile("${path.module}/aws-auto-auth.tpl",
+    {
+      aws_node_role  = var.aws_node_role
+      aws_region     = var.aws_region
+      aws_access_key = var.aws_access_key
+      aws_secret_key = var.aws_secret_key
+    }
+)}
+    EOT
+connection {
+  type                = "ssh"
+  user                = var.ssh_user
+  private_key         = var.ssh_private_key
+  timeout             = var.ssh_timeout
+  host                = var.nodes_public_ips != null ? var.nodes_public_ips[keys(var.nodes_public_ips)[count.index]] : var.nodes[keys(var.nodes)[count.index]]
+  bastion_host        = var.ssh_bastion_host
+  bastion_port        = var.ssh_bastion_port
+  bastion_private_key = var.ssh_bastion_private_key
+  bastion_user        = var.ssh_bastion_user
+}
+}
+
+provisioner "remote-exec" {
+  inline = ["sudo mv /tmp/agent.hcl /etc/vault.d/agent.hcl && sudo systemctl restart vault-agent"]
+  connection {
+    type                = "ssh"
+    user                = var.ssh_user
+    timeout             = var.ssh_timeout
+    private_key         = var.ssh_private_key
+    host                = var.nodes_public_ips != null ? var.nodes_public_ips[keys(var.nodes_public_ips)[count.index]] : var.nodes[keys(var.nodes)[count.index]]
+    bastion_host        = var.ssh_bastion_host
+    bastion_port        = var.ssh_bastion_port
+    bastion_private_key = var.ssh_bastion_private_key
+    bastion_user        = var.ssh_bastion_user
+  }
+}
+}

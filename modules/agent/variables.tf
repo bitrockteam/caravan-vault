@@ -52,6 +52,32 @@ variable "approle_auto_auth" {
   description = "(optional) Should agent auto authenticate via AppRole"
 }
 
+variable "aws_auto_auth" {
+  type        = bool
+  default     = false
+  description = "(optional) Should agent auto authenticate via AWS's IAM"
+}
+variable "aws_node_role" {
+  type        = string
+  default     = null
+  description = "(optional) Configured AWS role of the node"
+}
+variable "aws_region" {
+  type        = string
+  default     = null
+  description = "(optional) Configured AWS region of the node"
+}
+variable "aws_access_key" {
+  type        = string
+  default     = null
+  description = "(optional) Static AWS Access Key credential for authentication"
+}
+variable "aws_secret_key" {
+  type        = string
+  default     = null
+  description = "(optional) Static AWS Secret Key credential for authentication"
+}
+
 variable "nodes_ids" {
   type        = list(string)
   description = "(required) IDs of nodes to trigger reprovision of agents"

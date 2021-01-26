@@ -80,3 +80,5 @@ ssh-key.pub
 ssh-key
 .ssh-key
 *.tfvars
+
+.terraform.lock.hcl
