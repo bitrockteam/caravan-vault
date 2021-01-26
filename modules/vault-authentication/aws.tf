@@ -33,6 +33,6 @@ resource "vault_aws_auth_backend_role" "aws_worker_node" {
     "consul-agent-role",
     "nomad-app-devs-volumes"
   ]
-  role      = "cluster-node"
+  role      = "worker-node"
   auth_type = "iam"
 }
