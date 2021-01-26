@@ -58,23 +58,23 @@ variable "aws_auto_auth" {
   description = "(optional) Should agent auto authenticate via AWS's IAM"
 }
 variable "aws_node_role" {
-  type = string
-  default = null
+  type        = string
+  default     = null
   description = "(optional) Configured AWS role of the node"
 }
 variable "aws_region" {
-  type = string
-  default = null
+  type        = string
+  default     = null
   description = "(optional) Configured AWS region of the node"
 }
 variable "aws_access_key" {
-  type = string
-  default = null
+  type        = string
+  default     = null
   description = "(optional) Static AWS Access Key credential for authentication"
 }
 variable "aws_secret_key" {
-  type = string
-  default = null
+  type        = string
+  default     = null
   description = "(optional) Static AWS Secret Key credential for authentication"
 }
 
