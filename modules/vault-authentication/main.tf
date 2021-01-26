@@ -1,4 +1,4 @@
 resource "vault_audit" "syslog" {
-    type = "syslog"
-    options = {}
+  type    = "syslog"
+  options = {}
 }
