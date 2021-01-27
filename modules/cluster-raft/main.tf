@@ -122,7 +122,7 @@ resource "null_resource" "copy_root_token" {
     environment = {
       SOURCE_HOST = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[keys(var.cluster_nodes)[0]] : var.cluster_nodes[keys(var.cluster_nodes)[0]]
     }
-    command = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${path.module}/.ssh-key ${var.ssh_user}@$SOURCE_HOST 'sudo cat /root/root_token' > .${var.unseal_project_id}-root_token"
+    command = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${path.module}/.ssh-key ${var.ssh_user}@$SOURCE_HOST 'sudo cat /root/root_token' > .${var.prefix}-root_token"
   }
   provisioner "local-exec" {
     command = "rm ${path.module}/.ssh-key"
