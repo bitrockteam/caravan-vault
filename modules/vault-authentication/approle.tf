@@ -1,13 +1,13 @@
 resource "vault_auth_backend" "approle" {
-  count = var.approle_authenticate ? 1 : 0
+  count = contains(var.auth_providers, "approle")
   type  = "approle"
 }
 
-resource "vault_approle_auth_backend_role" "pocnode" {
-  count          = var.approle_authenticate ? 1 : 0
-  backend        = var.approle_authenticate ? vault_auth_backend.approle[0].path : ""
-  role_name      = "pocnode"
+// FIXME: do we need control plane and worker plane roles?
+resource "vault_approle_auth_backend_role" "role" {
+  count          = contains(var.auth_providers, "approle")
+  backend        = vault_auth_backend.approle[0].path
+  role_name      = var.approle_role_name
   token_period   = 864000
-  token_policies = var.oci_pocnode_token_policies
+  token_policies = var.approle_token_policies
 }
-

@@ -1,26 +1,29 @@
 resource "vault_auth_backend" "oci" {
-  count = var.oci_authenticate ? 1 : 0
+  count = contains(var.auth_providers, "oci")
   type  = "oci"
   path  = "oci"
 }
+
 resource "null_resource" "oci_auth_config" {
-  count      = var.oci_authenticate ? 1 : 0
+  count      = contains(var.auth_providers, "oci")
   depends_on = [vault_auth_backend.oci[0]]
   provisioner "local-exec" {
     command = "vault write -address ${var.vault_endpoint} auth/oci/config home_tenancy_id=${var.oci_home_tenancy_id}"
   }
   provisioner "local-exec" {
-    command = "vault write -address ${var.vault_endpoint} auth/oci/role/pocnode token_period=864000 token_policies=pocapprole_reader ocid_list=${var.pocnode_oci_dynamic_group_ocid}"
+    command = "vault write -address ${var.vault_endpoint} auth/oci/role/${var.oci_role_name} token_period=864000 token_policies=${vault_policy.oci_reader.name} ocid_list=${var.oci_dynamic_group_ocid}"
   }
 }
 
-resource "vault_policy" "pocapprole_reader" {
-  name   = "pocapprole_reader"
-  policy = <<EOT
-path "auth/approle/role/pocnode/role-id" {
+resource "vault_policy" "oci_reader" {
+  count      = contains(var.auth_providers, "oci")
+  depends_on = [vault_auth_backend.oci[0]]
+  name       = "${var.oci_role_name}_reader"
+  policy     = <<EOT
+path "auth/approle/role/${var.approle_role_name}/role-id" {
   capabilities = ["read"]
 }
-path "auth/approle/role/pocnode/secret-id" {
+path "auth/approle/role/${var.approle_role_name}/secret-id" {
   capabilities = ["update"]
 }
 EOT
