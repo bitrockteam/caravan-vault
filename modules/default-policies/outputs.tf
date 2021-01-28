@@ -3,5 +3,5 @@ output "control_plane_policies" {
 }
 
 output "worker_plane_policies" {
-  value = [vault_policy.consul_agent.name, vault_policy.nomad_app_devs_volumes]
+  value = [vault_policy.consul_agent.name, vault_policy.nomad_app_devs_volumes.name]
 }
