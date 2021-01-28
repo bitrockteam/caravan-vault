@@ -16,6 +16,11 @@ resource "vault_aws_auth_backend_role" "aws_cluster_node" {
   auth_type            = "iam"
 }
 
+resource "vault_aws_auth_backend_client" "config" {
+  count                = contains(var.auth_providers, "aws") ? 1 : 0
+  backend    = vault_auth_backend.aws[0].path
+}
+
 resource "vault_aws_auth_backend_role" "aws_worker_node" {
   count                = contains(var.auth_providers, "aws") ? 1 : 0
   backend              = vault_auth_backend.aws[0].path
