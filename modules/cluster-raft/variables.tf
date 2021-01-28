@@ -61,6 +61,10 @@ variable "unseal_project_id" {
   type    = string
   default = ""
 }
+variable "prefix" {
+  type    = string
+  default = ""
+}
 variable "cluster_nodes_ids" {
   type = list(string)
 }
