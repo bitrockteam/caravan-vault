@@ -207,7 +207,6 @@ resource "null_resource" "vault_aws_agent_config" {
       ${templatefile("${path.module}/aws-auto-auth.tpl",
     {
       aws_node_role  = var.aws_node_role
-      aws_region     = var.aws_region
       aws_access_key = var.aws_access_key
       aws_secret_key = var.aws_secret_key
     }
