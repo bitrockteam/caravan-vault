@@ -1,7 +1,7 @@
 
 resource "vault_jwt_auth_backend" "gsuite" {
   description        = "Google G Suite"
-  count              = contains(var.auth_providers, "gsuite")
+  count              = contains(var.auth_providers, "gsuite") ? 1 : 0
   path               = "gsuite"
   type               = "oidc"
   oidc_discovery_url = "https://accounts.google.com"
@@ -14,7 +14,7 @@ resource "vault_jwt_auth_backend" "gsuite" {
 }
 
 resource "vault_jwt_auth_backend_role" "gsuite_default_role" {
-  count           = contains(var.auth_providers, "gsuite")
+  count           = contains(var.auth_providers, "gsuite") ? 1 : 0
   backend         = vault_jwt_auth_backend.gsuite[0].path
   role_name       = var.gsuite_default_role
   token_policies  = var.gsuite_default_role_policies

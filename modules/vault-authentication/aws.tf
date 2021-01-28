@@ -1,11 +1,11 @@
 resource "vault_auth_backend" "aws" {
-  count = contains(var.auth_providers, "aws")
+  count = contains(var.auth_providers, "aws") ? 1 : 0
   type  = "aws"
   path  = "aws"
 }
 
 resource "vault_aws_auth_backend_role" "aws_cluster_node" {
-  count                = contains(var.auth_providers, "aws")
+  count                = contains(var.auth_providers, "aws") ? 1 : 0
   backend              = vault_auth_backend.aws[0].path
   inferred_entity_type = "ec2_instance"
   inferred_aws_region  = var.aws_region
@@ -17,7 +17,7 @@ resource "vault_aws_auth_backend_role" "aws_cluster_node" {
 }
 
 resource "vault_aws_auth_backend_role" "aws_worker_node" {
-  count                = contains(var.auth_providers, "aws")
+  count                = contains(var.auth_providers, "aws") ? 1 : 0
   backend              = vault_auth_backend.aws[0].path
   inferred_entity_type = "ec2_instance"
   inferred_aws_region  = var.aws_region
