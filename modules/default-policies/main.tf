@@ -8,7 +8,7 @@ resource "vault_policy" "vault_admin" {
   policy = file("${path.module}/policies/vault-admin-policy.hcl")
 }
 
-resource "vault_policy" "nomad_cluster" {
+resource "vault_policy" "nomad_server" {
   name   = "nomad-server"
   policy = file("${path.module}/policies/nomad-server-policy.hcl")
 }
