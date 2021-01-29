@@ -4,7 +4,7 @@ resource "vault_auth_backend" "gcp" {
   path  = "gcp"
 }
 
-resource "vault_gcp_auth_backend_role" "gcp-cluster-node" {
+resource "vault_gcp_auth_backend_role" "gcp_cluster_node" {
   count                  = contains(var.auth_providers, "gcp") ? 1 : 0
   backend                = vault_auth_backend.gcp[0].path
   bound_projects         = [var.gcp_project_id]
@@ -15,7 +15,7 @@ resource "vault_gcp_auth_backend_role" "gcp-cluster-node" {
   allow_gce_inference    = true
 }
 
-resource "vault_gcp_auth_backend_role" "gcp-worker-node" {
+resource "vault_gcp_auth_backend_role" "gcp_worker_node" {
   count                  = contains(var.auth_providers, "gcp") ? 1 : 0
   backend                = vault_auth_backend.gcp[0].path
   bound_projects         = [var.gcp_project_id]
