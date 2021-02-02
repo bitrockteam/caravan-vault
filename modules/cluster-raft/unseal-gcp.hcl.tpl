@@ -1,6 +1,6 @@
 seal "gcpckms" {
-  region      = "${unseal_region}"
-  key_ring    = "${unseal_keyring}"
-  crypto_key  = "${unseal_key}"
-  project     = "${project_id}"
+  region      = "${gcp_region}"
+  key_ring    = "${gcp_keyring}"
+  crypto_key  = "${gcp_key}"
+  project     = "${gcp_project_id}"
 }
