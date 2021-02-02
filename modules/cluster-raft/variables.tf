@@ -53,16 +53,6 @@ variable "prefix" {
 }
 
 // GCP
-variable "gcp_node_role" {
-  type        = string
-  default     = null
-  description = "(optional) Configured GCP role of the node"
-}
-variable "gcp_service_account" {
-  type        = string
-  default     = null
-  description = "(optional) Configured GCP service account"
-}
 variable "gcp_project_id" {
   type        = string
   default     = null
