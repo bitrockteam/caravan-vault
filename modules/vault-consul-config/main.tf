@@ -60,15 +60,15 @@ resource "consul_acl_token_policy_attachment" "cluster_node_agent_token" {
 
 resource "consul_acl_token" "ui_token" {
   description = "ui policy token"
-  policies    = ["${consul_acl_policy.ui_policy.name}"]
+  policies    = [consul_acl_policy.ui_policy.name]
 }
 resource "consul_acl_token" "nomad_server_token" {
   description = "nomad server policy token"
-  policies    = ["${consul_acl_policy.nomad_server_policy.name}"]
+  policies    = [consul_acl_policy.nomad_server_policy.name]
 }
 resource "consul_acl_token" "nomad_client_token" {
   description = "nomad client policy token"
-  policies    = ["${consul_acl_policy.nomad_client_policy.name}"]
+  policies    = [consul_acl_policy.nomad_client_policy.name]
 }
 
 data "consul_acl_token_secret_id" "ui_token" {

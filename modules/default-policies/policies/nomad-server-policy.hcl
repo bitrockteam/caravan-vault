@@ -1,8 +1,8 @@
-path "auth/token/create/cluster-node" {
+path "auth/token/create/${control_plane_role_name}" {
   capabilities = ["update"]
 }
 
-path "auth/token/roles/cluster-node" {
+path "auth/token/roles/${control_plane_role_name}" {
   capabilities = ["read"]
 }
 

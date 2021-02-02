@@ -1,91 +1,120 @@
-variable "pre13_depends_on" {
-  type    = any
-  default = null
-}
 variable "vault_endpoint" {
-  type    = string
-  default = null
+  type        = string
+  default     = null
+  description = "Fully qualified vault address as used in VAULT_ADDR"
+}
+variable "auth_providers" {
+  type        = list(string)
+  default     = []
+  description = "Allowed auth providers: aws, gcp, gsuite, oci, approle"
 }
 
-variable "gcp_authenticate" {
-  type    = bool
-  default = false
+variable "control_plane_token_policies_name" {
+  type = list(string)
+  default = [
+    "consul-agent-role",
+    "nomad-server"
+  ]
+  description = "The policies associated with control plane roles"
 }
-variable "gcp_authenticate_admin_group_name" {
-  type    = string
-  default = null
+variable "worker_plane_token_policies_name" {
+  type = list(string)
+  default = [
+    "consul-agent-role",
+    "nomad-app-devs-volumes"
+  ]
+  description = "The policies associated with worker plane roles"
 }
-variable "gcp_csi" {
-  type    = bool
-  default = false
+variable "control_plane_role_name" {
+  type        = string
+  default     = "control-plane"
+  description = "The control plane role name"
 }
-variable "gcp_cluster_node_service_account" {
-  type    = string
-  default = "cluster-node"
-}
-variable "gcp_worker_node_service_accounts" {
-  type    = list(string)
-  default = []
-}
-
-variable "oci_authenticate" {
-  type    = bool
-  default = false
-}
-variable "oci_home_tenancy_id" {
-  type    = string
-  default = null
-}
-variable "oci_pocnode_token_policies" {
-  type    = list(string)
-  default = null
-}
-variable "approle_authenticate" {
-  type    = bool
-  default = false
-}
-variable "pocnode_oci_dynamic_group_ocid" {
-  type    = string
-  default = null
+variable "worker_plane_role_name" {
+  type        = string
+  default     = "worker-plane"
+  description = "The worker plane role name"
 }
 
+// GCP configs
+variable "gcp_control_plane_service_accounts" {
+  type        = list(string)
+  default     = []
+  description = "(optional) When using GCP auth provider, the list of control plane service accounts"
+}
+variable "gcp_worker_plane_service_accounts" {
+  type        = list(string)
+  default     = []
+  description = "(optional) When using GCP auth provider, the list of worker plane service accounts"
+}
 variable "gcp_project_id" {
-  type    = string
-  default = null
+  type        = string
+  default     = null
+  description = "(optional) When using GCP auth provider, the Project ID"
 }
 
-variable "gsuite_authenticate" {
-  type    = bool
-  default = false
+// OCI configs
+variable "oci_home_tenancy_id" {
+  type        = string
+  default     = null
+  description = "(optional) When using OCI auth provider, the Tenant Id"
 }
+variable "oci_role_name" {
+  type        = string
+  default     = null
+  description = "(optional) When using OCI auth provider, the role name to create"
+}
+variable "oci_dynamic_group_ocid" {
+  type        = string
+  default     = null
+  description = "(optional) When using OCI auth provider, the dynamic group ocid"
+}
+
+// APPROLE configs
+variable "approle_token_policies" {
+  type        = list(string)
+  default     = null
+  description = "(optional) When using APPROLE auth provider, the token policies associated with the role"
+}
+variable "approle_role_name" {
+  type        = string
+  default     = null
+  description = "(optional) When using APPROLE auth provider, the role name"
+}
+
+// GSUITE configs
 variable "gsuite_domain" {
-  type    = string
-  default = null
+  type        = string
+  default     = null
+  description = "(optional) When using GSUITE auth provider, the domain name"
 }
 variable "gsuite_client_id" {
-  type    = string
-  default = null
+  type        = string
+  default     = null
+  description = "(optional) When using GSUITE auth provider, the client id"
 }
 variable "gsuite_client_secret" {
-  type    = string
-  default = null
+  type        = string
+  default     = null
+  description = "(optional) When using GSUITE auth provider, the client secret"
 }
 variable "gsuite_default_role" {
-  type    = string
-  default = null
+  type        = string
+  default     = null
+  description = "(optional) When using GSUITE auth provider, the name of the default role"
 }
 variable "gsuite_default_role_policies" {
-  type    = list(string)
-  default = []
+  type        = list(string)
+  default     = []
+  description = "(optional) When using GSUITE auth provider, the list of policies associated with the default role"
 }
 variable "gsuite_allowed_redirect_uris" {
-  type    = list(string)
-  default = []
+  type        = list(string)
+  default     = []
+  description = "(optional) When using GSUITE auth provider, the allowed redirect uris"
 }
-variable "aws_authenticate" {
-  type    = bool
-  default = false
-}
+
+// AWS configs
 variable "aws_region" {
   type        = string
   default     = null

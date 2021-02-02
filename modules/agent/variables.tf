@@ -62,11 +62,6 @@ variable "aws_node_role" {
   default     = null
   description = "(optional) Configured AWS role of the node"
 }
-variable "aws_region" {
-  type        = string
-  default     = null
-  description = "(optional) Configured AWS region of the node"
-}
 variable "aws_access_key" {
   type        = string
   default     = null
