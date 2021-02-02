@@ -1,8 +1,8 @@
 resource "null_resource" "vault_cluster_node_config" {
   triggers = {
-    ids = join("-", var.cluster_nodes_ids)
+    ids = join("-", var.control_plane_nodes_ids)
   }
-  for_each = var.cluster_nodes
+  for_each = var.control_plane_nodes
   provisioner "file" {
     destination = "/tmp/vault.hcl"
     content = <<-EOT
@@ -12,22 +12,27 @@ resource "null_resource" "vault_cluster_node_config" {
       node_id           = each.key
       node_ip           = each.value
       vault_home        = var.vault_home
-      cluster_nodes     = var.cluster_nodes
-      cluster_nodes_ids = var.cluster_nodes_ids
+      cluster_nodes     = var.control_plane_nodes
+      cluster_nodes_ids = var.control_plane_nodes_ids
     }
     )}
       ${templatefile(
     "${path.module}/unseal-${var.unseal_type}.hcl.tpl",
     {
-      unseal_region                = var.unseal_region
-      unseal_keyring               = var.unseal_keyring
-      unseal_key                   = var.unseal_key
-      unseal_crypto_endpoint       = var.unseal_crypto_endpoint
-      unseal_management_endpoint   = var.unseal_management_endpoint
-      unseal_transit_vault_address = var.unseal_transit_vault_address
-      unseal_transit_mount_path    = var.unseal_transit_mount_path
-      unseal_transit_vault_token   = var.unseal_transit_vault_token
-      project_id                   = var.unseal_project_id
+      transit_vault_address = var.transit_vault_address
+      transit_mount_path    = var.transit_mount_path
+      transit_vault_token   = var.transit_vault_token
+      transit_key                   = var.transit_key
+
+      oci_key                   = var.oci_key
+      oci_crypto_endpoint       = var.oci_crypto_endpoint
+      oci_management_endpoint   = var.oci_management_endpoint
+
+      gcp_region = var.gcp_region
+      gcp_keyring = var.gcp_keyring
+      gcp_key = var.gcp_key
+      gcp_project_id = var.gcp_project_id
+
       aws_kms_region               = var.aws_kms_region
       aws_kms_key_id               = var.aws_kms_key_id
       aws_access_key               = var.aws_access_key
@@ -42,7 +47,7 @@ connection {
   user                = var.ssh_user
   private_key         = var.ssh_private_key
   timeout             = var.ssh_timeout
-  host                = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[each.key] : each.value
+  host                = var.control_plane_nodes_public_ips != null ? var.control_plane_nodes_public_ips[each.key] : each.value
   bastion_host        = var.ssh_bastion_host
   bastion_port        = var.ssh_bastion_port
   bastion_private_key = var.ssh_bastion_private_key
@@ -57,7 +62,7 @@ provisioner "remote-exec" {
     user                = var.ssh_user
     timeout             = var.ssh_timeout
     private_key         = var.ssh_private_key
-    host                = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[each.key] : each.value
+    host                = var.control_plane_nodes_public_ips != null ? var.control_plane_nodes_public_ips[each.key] : each.value
     bastion_host        = var.ssh_bastion_host
     bastion_port        = var.ssh_bastion_port
     bastion_private_key = var.ssh_bastion_private_key
@@ -78,7 +83,7 @@ resource "null_resource" "vault_cluster_node_1_init" {
       user                = var.ssh_user
       timeout             = var.ssh_timeout
       private_key         = var.ssh_private_key
-      host                = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[keys(var.cluster_nodes)[0]] : var.cluster_nodes[keys(var.cluster_nodes)[0]]
+      host                = var.control_plane_nodes_public_ips != null ? var.control_plane_nodes_public_ips[keys(var.control_plane_nodes)[0]] : var.control_plane_nodes[keys(var.control_plane_nodes)[0]]
       bastion_host        = var.ssh_bastion_host
       bastion_port        = var.ssh_bastion_port
       bastion_private_key = var.ssh_bastion_private_key
@@ -95,7 +100,7 @@ resource "null_resource" "vault_cluster_node_1_init" {
       user                = var.ssh_user
       timeout             = var.ssh_timeout
       private_key         = var.ssh_private_key
-      host                = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[keys(var.cluster_nodes)[0]] : var.cluster_nodes[keys(var.cluster_nodes)[0]]
+      host                = var.control_plane_nodes_public_ips != null ? var.control_plane_nodes_public_ips[keys(var.control_plane_nodes)[0]] : var.control_plane_nodes[keys(var.control_plane_nodes)[0]]
       bastion_host        = var.ssh_bastion_host
       bastion_port        = var.ssh_bastion_port
       bastion_private_key = var.ssh_bastion_private_key
@@ -120,7 +125,7 @@ resource "null_resource" "copy_root_token" {
   ]
   provisioner "local-exec" {
     environment = {
-      SOURCE_HOST = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[keys(var.cluster_nodes)[0]] : var.cluster_nodes[keys(var.cluster_nodes)[0]]
+      SOURCE_HOST = var.control_plane_nodes_public_ips != null ? var.control_plane_nodes_public_ips[keys(var.control_plane_nodes)[0]] : var.control_plane_nodes[keys(var.control_plane_nodes)[0]]
     }
     command = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${path.module}/.ssh-key ${var.ssh_user}@$SOURCE_HOST 'sudo cat /root/root_token' > .${var.prefix}-root_token"
   }
@@ -130,7 +135,7 @@ resource "null_resource" "copy_root_token" {
 }
 
 resource "null_resource" "vault_cluster_node_not_1_init" {
-  count = length(var.cluster_nodes_ids) - 1 < 0 ? 0 : length(var.cluster_nodes_ids) - 1
+  count = length(var.control_plane_nodes_ids) - 1 < 0 ? 0 : length(var.control_plane_nodes_ids) - 1
   triggers = {
     nodes = join(",", try(null_resource.vault_cluster_node_config[*].id, []))
   }
@@ -145,7 +150,7 @@ resource "null_resource" "vault_cluster_node_not_1_init" {
       user                = var.ssh_user
       timeout             = var.ssh_timeout
       private_key         = var.ssh_private_key
-      host                = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[keys(var.cluster_nodes)[count.index + 1]] : var.cluster_nodes[keys(var.cluster_nodes)[count.index + 1]]
+      host                = var.control_plane_nodes_public_ips != null ? var.control_plane_nodes_public_ips[keys(var.control_plane_nodes)[count.index + 1]] : var.control_plane_nodes[keys(var.control_plane_nodes)[count.index + 1]]
       bastion_host        = var.ssh_bastion_host
       bastion_port        = var.ssh_bastion_port
       bastion_private_key = var.ssh_bastion_private_key

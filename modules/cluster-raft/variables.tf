@@ -1,9 +1,12 @@
-variable "cluster_nodes" {
+variable "control_plane_nodes" {
   type = map(any)
 }
-variable "cluster_nodes_public_ips" {
+variable "control_plane_nodes_public_ips" {
   type    = map(any)
   default = null
+}
+variable "control_plane_nodes_ids" {
+  type = list(string)
 }
 variable "vault_home" {
   type    = string
@@ -36,7 +39,6 @@ variable "ssh_bastion_user" {
   type    = string
   default = null
 }
-
 variable "unseal_type" {
   type    = string
   default = "gcp"
@@ -45,30 +47,12 @@ variable "unseal_type" {
     error_message = "Unsupported unseal_type value. Supported values: gcp, oci, transit, aws."
   }
 }
-variable "unseal_region" {
-  type    = string
-  default = "global"
-}
-variable "unseal_keyring" {
-  type    = string
-  default = "vault_unseal_keyring"
-}
-variable "unseal_key" {
-  type    = string
-  default = "vault_unseal_keyring"
-}
-variable "unseal_project_id" {
-  type    = string
-  default = ""
-}
 variable "prefix" {
   type    = string
   default = ""
 }
-variable "cluster_nodes_ids" {
-  type = list(string)
-}
 
+// GCP
 variable "gcp_node_role" {
   type        = string
   default     = null
@@ -84,33 +68,57 @@ variable "gcp_project_id" {
   default     = null
   description = "(optional) The GCP Project ID"
 }
+variable "gcp_region" {
+  type = string
+  default = "global"
+}
+variable "gcp_keyring" {
+  type = string
+  default = null
+}
+variable "gcp_key" {
+  type = string
+  default = null
+}
 
-variable "unseal_crypto_endpoint" {
+// OCI
+variable "oci_crypto_endpoint" {
   type        = string
   default     = null
   description = "(optional) The OCI Vault crypto endpoint"
 }
-variable "unseal_management_endpoint" {
+variable "oci_management_endpoint" {
   type        = string
   default     = null
   description = "(optional) The OCI Vault management endpoint"
 }
+variable "oci_key" {
+  type = string
+  default = null
+}
 
-variable "unseal_transit_vault_address" {
+// TRANSIT
+variable "transit_vault_address" {
   type        = string
   default     = null
   description = "(optional) The Vault address for transit auto unseal"
 }
-variable "unseal_transit_mount_path" {
+variable "transit_mount_path" {
   type        = string
   default     = null
   description = "(optional) The Vault transit engine mount path for transit auto unseal"
 }
-variable "unseal_transit_vault_token" {
+variable "transit_vault_token" {
   type        = string
   default     = null
   description = "(optional) The Vault token to access transit engine mount path for transit auto unseal"
 }
+variable "transit_key" {
+  type    = string
+  default = "vault_unseal_keyring"
+}
+
+// AWS
 variable "aws_kms_region" {
   type        = string
   default     = null

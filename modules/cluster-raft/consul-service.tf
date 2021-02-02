@@ -1,8 +1,8 @@
 resource "null_resource" "vault_cluster_node_local_service" {
   triggers = {
-    ids = join("-", var.cluster_nodes_ids)
+    ids = join("-", var.control_plane_nodes_ids)
   }
-  for_each = var.cluster_nodes
+  for_each = var.control_plane_nodes
 
   provisioner "file" {
     destination = "/tmp/vault-cluster-service.json"
@@ -12,7 +12,7 @@ resource "null_resource" "vault_cluster_node_local_service" {
       user                = var.ssh_user
       private_key         = var.ssh_private_key
       timeout             = var.ssh_timeout
-      host                = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[each.key] : each.value
+      host                = var.control_plane_nodes_public_ips != null ? var.control_plane_nodes_public_ips[each.key] : each.value
       bastion_host        = var.ssh_bastion_host
       bastion_port        = var.ssh_bastion_port
       bastion_private_key = var.ssh_bastion_private_key
@@ -27,7 +27,7 @@ resource "null_resource" "vault_cluster_node_local_service" {
       user                = var.ssh_user
       timeout             = var.ssh_timeout
       private_key         = var.ssh_private_key
-      host                = var.cluster_nodes_public_ips != null ? var.cluster_nodes_public_ips[each.key] : each.value
+      host                = var.control_plane_nodes_public_ips != null ? var.control_plane_nodes_public_ips[each.key] : each.value
       bastion_host        = var.ssh_bastion_host
       bastion_port        = var.ssh_bastion_port
       bastion_private_key = var.ssh_bastion_private_key
