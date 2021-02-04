@@ -144,7 +144,7 @@ variable "azure_tenant_id" {
 }
 variable "azure_resource" {
   type        = string
-  default     = null
+  default     = "https://management.azure.com/"
   description = "(optional) The configured URL for the application registered in Azure Active Directory."
 }
 variable "azure_control_plane_service_principal_ids" {
