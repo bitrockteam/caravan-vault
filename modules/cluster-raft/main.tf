@@ -22,22 +22,27 @@ resource "null_resource" "vault_cluster_node_config" {
       transit_vault_address = var.transit_vault_address
       transit_mount_path    = var.transit_mount_path
       transit_vault_token   = var.transit_vault_token
-      transit_key                   = var.transit_key
+      transit_key           = var.transit_key
 
-      oci_key                   = var.oci_key
-      oci_crypto_endpoint       = var.oci_crypto_endpoint
-      oci_management_endpoint   = var.oci_management_endpoint
+      oci_key                 = var.oci_key
+      oci_crypto_endpoint     = var.oci_crypto_endpoint
+      oci_management_endpoint = var.oci_management_endpoint
 
-      gcp_region = var.gcp_region
-      gcp_keyring = var.gcp_keyring
-      gcp_key = var.gcp_key
+      gcp_region     = var.gcp_region
+      gcp_keyring    = var.gcp_keyring
+      gcp_key        = var.gcp_key
       gcp_project_id = var.gcp_project_id
 
-      aws_kms_region               = var.aws_kms_region
-      aws_kms_key_id               = var.aws_kms_key_id
-      aws_access_key               = var.aws_access_key
-      aws_secret_key               = var.aws_secret_key
-      aws_endpoint                 = var.aws_endpoint
+      aws_kms_region = var.aws_kms_region
+      aws_kms_key_id = var.aws_kms_key_id
+      aws_access_key = var.aws_access_key
+      aws_secret_key = var.aws_secret_key
+      aws_endpoint   = var.aws_endpoint
+
+      azure_tenant_id   = var.azure_tenant_id
+      azure_environment = var.azure_environment
+      azure_vault_name  = var.azure_vault_name
+      azure_key_name    = var.azure_key_name
     }
 )}
 

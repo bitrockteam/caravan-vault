@@ -135,3 +135,25 @@ variable "aws_worker_node_iam_role_arns" {
   default     = []
   description = "(optional) The list of AWS IAM Role ARNs that can authenticate as worker nodes"
 }
+
+// Azure
+variable "azure_tenant_id" {
+  type        = string
+  default     = null
+  description = "(optional) The tenant id for the Azure Active Directory organization."
+}
+variable "azure_resource" {
+  type        = string
+  default     = "https://management.azure.com/"
+  description = "(optional) The configured URL for the application registered in Azure Active Directory."
+}
+variable "azure_control_plane_service_principal_ids" {
+  type        = list(string)
+  default     = []
+  description = "(optional) Defines a constraint on the service principals that can perform the login operation that they should be possess the ids specified by this field."
+}
+variable "azure_bound_resource_groups" {
+  type        = list(string)
+  default     = []
+  description = "(optional) Defines a constraint on the virtual machiness that can perform the login operation that they be associated with the resource group that matches the value specified by this field."
+}

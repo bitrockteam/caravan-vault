@@ -43,8 +43,8 @@ variable "unseal_type" {
   type    = string
   default = "gcp"
   validation {
-    condition     = contains(toset(["gcp", "oci", "transit", "aws"]), var.unseal_type)
-    error_message = "Unsupported unseal_type value. Supported values: gcp, oci, transit, aws."
+    condition     = contains(toset(["gcp", "oci", "transit", "aws", "azure"]), var.unseal_type)
+    error_message = "Unsupported unseal_type value. Supported values: gcp, oci, transit, aws, azure."
   }
 }
 variable "prefix" {
@@ -59,15 +59,15 @@ variable "gcp_project_id" {
   description = "(optional) The GCP Project ID"
 }
 variable "gcp_region" {
-  type = string
+  type    = string
   default = "global"
 }
 variable "gcp_keyring" {
-  type = string
+  type    = string
   default = null
 }
 variable "gcp_key" {
-  type = string
+  type    = string
   default = null
 }
 
@@ -83,7 +83,7 @@ variable "oci_management_endpoint" {
   description = "(optional) The OCI Vault management endpoint"
 }
 variable "oci_key" {
-  type = string
+  type    = string
   default = null
 }
 
@@ -133,4 +133,26 @@ variable "aws_endpoint" {
   type        = string
   default     = null
   description = "(optional) The custom AWS VPC Endpoint to use for AWS KMS auto unseal"
+}
+
+// AZURE
+variable "azure_tenant_id" {
+  type        = string
+  default     = null
+  description = "(optional) The tenant id for the Azure Active Directory organization."
+}
+variable "azure_environment" {
+  type        = string
+  default     = "AZUREPUBLICCLOUD"
+  description = "(optional) The Azure Cloud environment API endpoints to use."
+}
+variable "azure_vault_name" {
+  type        = string
+  default     = null
+  description = "(optional) The Key Vault vault to use the encryption keys for encryption and decryption."
+}
+variable "azure_key_name" {
+  type        = string
+  default     = null
+  description = "(optional) The Key Vault key to use for encryption and decryption."
 }
