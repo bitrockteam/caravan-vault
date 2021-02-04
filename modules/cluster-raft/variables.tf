@@ -43,8 +43,8 @@ variable "unseal_type" {
   type    = string
   default = "gcp"
   validation {
-    condition     = contains(toset(["gcp", "oci", "transit", "aws"]), var.unseal_type)
-    error_message = "Unsupported unseal_type value. Supported values: gcp, oci, transit, aws."
+    condition     = contains(toset(["gcp", "oci", "transit", "aws", "azure"]), var.unseal_type)
+    error_message = "Unsupported unseal_type value. Supported values: gcp, oci, transit, aws, azure."
   }
 }
 variable "prefix" {
