@@ -73,6 +73,22 @@ variable "aws_secret_key" {
   description = "(optional) Static AWS Secret Key credential for authentication"
 }
 
+variable "azure_auto_auth" {
+  type        = bool
+  default     = false
+  description = "(optional) Should agent auto authenticate via Azure's IAM"
+}
+variable "azure_node_role" {
+  type        = string
+  default     = null
+  description = "(optional) Configured Azure role of the node"
+}
+variable "azure_resource" {
+  type        = string
+  default     = null
+  description = "(optional) A configured Azure AD application which is used as the resource for generating MSI access tokens"
+}
+
 variable "nodes_ids" {
   type        = list(string)
   description = "(required) IDs of nodes to trigger reprovision of agents"
