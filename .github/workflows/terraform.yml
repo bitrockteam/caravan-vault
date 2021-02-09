@@ -40,7 +40,7 @@ jobs:
 
       - name: Terraform Format
         id: fmt
-        run: terraform fmt -check
+        run: for D in modules/*; do [ -d "${D}" ] && cd ${D}; terraform fmt -check -recursive; done
 
       - name: Terraform Init
         id: init
