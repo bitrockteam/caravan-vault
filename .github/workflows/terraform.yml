@@ -40,12 +40,12 @@ jobs:
 
       - name: Terraform Format
         id: fmt
-        run: for D in modules/*; do [ -d "${D}" ] && cd ${D}; terraform fmt -check -recursive; done
+        run: for D in modules/*; do [ -d "${D}" ] && cd ${D}; echo "${D}"; terraform fmt -check -recursive; done
 
       - name: Terraform Init
         id: init
-        run: for D in modules/*; do [ -d "${D}" ] && cd ${D}; terraform init -backend=false; done
+        run: for D in modules/*; do [ -d "${D}" ] && cd ${D}; echo "${D}"; terraform init -backend=false; done
 
       - name: Terraform Validate
         id: validate
-        run: for D in modules/*; do [ -d "${D}" ] && cd ${D}; terraform validate; done
+        run: for D in modules/*; do [ -d "${D}" ] && cd ${D}; echo "${D}"; terraform validate; done
