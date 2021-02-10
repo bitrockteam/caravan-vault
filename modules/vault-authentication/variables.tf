@@ -167,4 +167,13 @@ variable "azure_subscription_ids" {
   default     = []
   description = "(optional) Defines a constraint on the subscriptions that can perform the login operation to ones which matches the value specified by this field."
 }
-
+variable "azure_client_id" {
+  type        = string
+  default     = ""
+  description = "(Optional) The client id for credentials to query the Azure APIs. Currently read permissions to query compute resources are required."
+}
+variable "azure_client_secret" {
+  type        = string
+  default     = ""
+  description = "(Optional) The client secret for credentials to query the Azure APIs."
+}
