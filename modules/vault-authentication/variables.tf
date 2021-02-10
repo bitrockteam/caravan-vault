@@ -152,8 +152,19 @@ variable "azure_control_plane_service_principal_ids" {
   default     = []
   description = "(optional) Defines a constraint on the service principals that can perform the login operation that they should be possess the ids specified by this field."
 }
-variable "azure_bound_resource_groups" {
+variable "azure_worker_plane_service_principal_ids" {
+  type        = list(string)
+  default     = []
+  description = "(optional) Defines a constraint on the service principals that can perform the login operation that they should be possess the ids specified by this field."
+}
+variable "azure_resource_groups" {
   type        = list(string)
   default     = []
   description = "(optional) Defines a constraint on the virtual machiness that can perform the login operation that they be associated with the resource group that matches the value specified by this field."
 }
+variable "azure_subscription_ids" {
+  type        = list(string)
+  default     = []
+  description = "(optional) Defines a constraint on the subscriptions that can perform the login operation to ones which matches the value specified by this field."
+}
+
