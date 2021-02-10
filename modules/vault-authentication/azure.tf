@@ -5,10 +5,12 @@ resource "vault_auth_backend" "azure" {
 }
 
 resource "vault_azure_auth_backend_config" "config" {
-  count     = contains(var.auth_providers, "azure") ? 1 : 0
-  backend   = vault_auth_backend.azure[0].path
-  tenant_id = var.azure_tenant_id
-  resource  = var.azure_resource
+  count         = contains(var.auth_providers, "azure") ? 1 : 0
+  backend       = vault_auth_backend.azure[0].path
+  tenant_id     = var.azure_tenant_id
+  resource      = var.azure_resource
+  client_id     = var.azure_client_id
+  client_secret = var.azure_client_secret
 }
 
 resource "vault_azure_auth_backend_role" "control_plane" {
