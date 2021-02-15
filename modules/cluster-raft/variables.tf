@@ -1,47 +1,56 @@
 variable "control_plane_nodes" {
-  type = map(any)
+  type        = map(any)
+  description = "A map in form of 'node-name' => 'node's private IP' of the nodes to provision the cluster on"
 }
 variable "control_plane_nodes_public_ips" {
-  type    = map(any)
-  default = null
+  type        = map(any)
+  description = "The public IPs of the node to SSH into them"
+  default     = null
 }
 variable "control_plane_nodes_ids" {
   type = list(string)
 }
 variable "vault_home" {
-  type    = string
-  default = "/var/lib/vault"
+  type        = string
+  description = "The directory where the vault's data is kept on the nodes"
+  default     = "/var/lib/vault"
 }
 variable "ssh_private_key" {
-  type = string
+  type        = string
+  description = "The private key to use for SSH connection to cluster nodes"
 }
 variable "ssh_user" {
-  type    = string
-  default = "centos"
+  type        = string
+  description = "The ssh user name to use for login into the cluster nodes"
+  default     = "centos"
 }
 variable "ssh_timeout" {
-  type    = string
-  default = "60s"
+  type        = string
+  description = "The ssh connection timeout"
+  default     = "60s"
 }
 variable "ssh_bastion_host" {
-  type    = string
-  default = null
+  type        = string
+  description = "The hostname of the bastion host to use for ssh into the nodes"
+  default     = null
 }
 variable "ssh_bastion_port" {
   type    = string
   default = "22"
 }
 variable "ssh_bastion_private_key" {
-  type    = string
-  default = null
+  type        = string
+  description = "The private key to use for SSH connection to the bastion host"
+  default     = null
 }
 variable "ssh_bastion_user" {
   type    = string
   default = null
 }
 variable "unseal_type" {
-  type    = string
-  default = "gcp"
+  type        = string
+  description = "The type of the unseal configuration to use"
+  default     = "gcp"
   validation {
     condition     = contains(toset(["gcp", "oci", "transit", "aws", "azure"]), var.unseal_type)
     error_message = "Unsupported unseal_type value. Supported values: gcp, oci, transit, aws, azure."
