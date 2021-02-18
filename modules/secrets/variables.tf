@@ -9,3 +9,23 @@ variable "gcp_project_id" {
   default     = null
   description = "(optional) The GCP Project ID"
 }
+
+variable "azure_csi" {
+  type = bool
+  default = false
+}
+
+variable "azure_subscription_id" {
+  type = string
+  default = null
+}
+
+variable "azure_resource_group" {
+  type = string
+  default = null
+}
+
+variable "azure_tenant_id" {
+  type = string
+  default = null
+}
