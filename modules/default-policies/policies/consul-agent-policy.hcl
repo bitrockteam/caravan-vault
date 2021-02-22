@@ -17,6 +17,10 @@ path "secret/data/gcp/pd_csi_sa_credentials" {
   capabilities = ["read"]
 }
 
+path "azure/creds/contributor" {
+  capabilities = ["read"]
+}
+
 path "sys/mounts/*" {
   capabilities = [ "sudo", "create", "read", "update", "delete", "list" ]
 }
