@@ -5,3 +5,7 @@ path "nomad/creds/app-devs-volumes" {
 path "secret/gcp/pd_csi_sa_credentials" {
   capabilities = ["read"]
 }
+
+path "azure/creds/contributor" {
+  capabilities = ["read"]
+}
