@@ -29,3 +29,13 @@ variable "azure_tenant_id" {
   type = string
   default = null
 }
+
+variable "azure_client_id" {
+  type = string
+  default = null
+}
+
+variable "azure_client_secret" {
+  type = string
+  default = null
+}
