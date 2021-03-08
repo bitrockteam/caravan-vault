@@ -43,6 +43,7 @@ No Modules.
 | gcp\_keyring | n/a | `string` | `null` | no |
 | gcp\_project\_id | (optional) The GCP Project ID | `string` | `null` | no |
 | gcp\_region | n/a | `string` | `"global"` | no |
+| license | Vault license key | `string` | `""` | no |
 | oci\_crypto\_endpoint | (optional) The OCI Vault crypto endpoint | `string` | `null` | no |
 | oci\_key | n/a | `string` | `null` | no |
 | oci\_management\_endpoint | (optional) The OCI Vault management endpoint | `string` | `null` | no |
