@@ -45,3 +45,10 @@ vault write tls_pki_int/roles/nomad allowed_domains="nomad,127.0.0.1" allow_subd
 rm tls_pki_intermediate.csr intermediate.cert.pem
 # add counters
 vault write sys/internal/counters/config enabled=enable
+
+# add license
+if [[ -n $LICENSE ]]
+then
+  echo "Adding Vault License..."
+  vault write sys/license "text=$LICENSE"
+fi
