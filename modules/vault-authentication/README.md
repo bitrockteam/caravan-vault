@@ -3,17 +3,14 @@
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
-| Name | Version |
-|------|---------|
-| terraform | ~> 0.13.6 |
-| vault | ~> 2.18.0 |
+No requirements.
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | null | n/a |
-| vault | ~> 2.18.0 |
+| vault | n/a |
 
 ## Modules
 
@@ -24,17 +21,17 @@ No Modules.
 | Name |
 |------|
 | [null_resource](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) |
-| [vault_approle_auth_backend_role](https://registry.terraform.io/providers/hashicorp/vault/2.18.0/docs/resources/approle_auth_backend_role) |
-| [vault_audit](https://registry.terraform.io/providers/hashicorp/vault/2.18.0/docs/resources/audit) |
-| [vault_auth_backend](https://registry.terraform.io/providers/hashicorp/vault/2.18.0/docs/resources/auth_backend) |
-| [vault_aws_auth_backend_client](https://registry.terraform.io/providers/hashicorp/vault/2.18.0/docs/resources/aws_auth_backend_client) |
-| [vault_aws_auth_backend_role](https://registry.terraform.io/providers/hashicorp/vault/2.18.0/docs/resources/aws_auth_backend_role) |
-| [vault_azure_auth_backend_config](https://registry.terraform.io/providers/hashicorp/vault/2.18.0/docs/resources/azure_auth_backend_config) |
-| [vault_azure_auth_backend_role](https://registry.terraform.io/providers/hashicorp/vault/2.18.0/docs/resources/azure_auth_backend_role) |
-| [vault_gcp_auth_backend_role](https://registry.terraform.io/providers/hashicorp/vault/2.18.0/docs/resources/gcp_auth_backend_role) |
-| [vault_jwt_auth_backend](https://registry.terraform.io/providers/hashicorp/vault/2.18.0/docs/resources/jwt_auth_backend) |
-| [vault_jwt_auth_backend_role](https://registry.terraform.io/providers/hashicorp/vault/2.18.0/docs/resources/jwt_auth_backend_role) |
-| [vault_policy](https://registry.terraform.io/providers/hashicorp/vault/2.18.0/docs/resources/policy) |
+| [vault_approle_auth_backend_role](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/approle_auth_backend_role) |
+| [vault_audit](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/audit) |
+| [vault_auth_backend](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/auth_backend) |
+| [vault_aws_auth_backend_client](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/aws_auth_backend_client) |
+| [vault_aws_auth_backend_role](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/aws_auth_backend_role) |
+| [vault_azure_auth_backend_config](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/azure_auth_backend_config) |
+| [vault_azure_auth_backend_role](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/azure_auth_backend_role) |
+| [vault_gcp_auth_backend_role](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/gcp_auth_backend_role) |
+| [vault_jwt_auth_backend](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/jwt_auth_backend) |
+| [vault_jwt_auth_backend_role](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/jwt_auth_backend_role) |
+| [vault_policy](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/policy) |
 
 ## Inputs
 
