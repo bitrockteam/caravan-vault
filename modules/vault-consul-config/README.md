@@ -3,18 +3,14 @@
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
-| Name | Version |
-|------|---------|
-| terraform | ~> 0.14 |
-| consul | ~> 2.11.0 |
-| vault | ~> 2.18.0 |
+No requirements.
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| consul | ~> 2.11.0 |
-| vault | ~> 2.18.0 |
+| consul | n/a |
+| vault | n/a |
 
 ## Modules
 

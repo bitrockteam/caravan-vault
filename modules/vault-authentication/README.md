@@ -3,17 +3,14 @@
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
-| Name | Version |
-|------|---------|
-| terraform | ~> 0.14 |
-| vault | ~> 2.18.0 |
+No requirements.
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | null | n/a |
-| vault | ~> 2.18.0 |
+| vault | n/a |
 
 ## Modules
 
