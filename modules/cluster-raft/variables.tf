@@ -165,3 +165,8 @@ variable "azure_key_name" {
   default     = null
   description = "(optional) The Key Vault key to use for encryption and decryption."
 }
+variable "license" {
+  type        = string
+  default     = ""
+  description = "Vault license key"
+}
