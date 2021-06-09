@@ -9,7 +9,7 @@
         "checks": [{
             "id": "vault_http",
             "name": "HTTP API on port 8200",
-            "http": "http://localhost:8200/v1/sys/health?standbyok=true",
+            "http": "http://localhost:8200/v1/sys/health?standbyok=true&perfstandbyok=true",
             "interval": "15s",
             "timeout": "5s"
         }]
