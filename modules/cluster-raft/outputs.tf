@@ -10,3 +10,7 @@ output "vault_token" {
   value     = data.local_file.vault_token.content
   sensitive = true
 }
+
+output "files" {
+  value = fileset(".", "*_token")
+}
