@@ -128,6 +128,11 @@ resource "null_resource" "copy_root_token" {
     local_file.ssh-key,
     null_resource.vault_cluster_node_1_init
   ]
+
+  triggers = {
+    token_sha1 = sha1(join("", [for f in fileset(".", "*_token") : filesha1(f)]))
+  }
+
   provisioner "local-exec" {
     environment = {
       SOURCE_HOST = var.control_plane_nodes_public_ips != null ? var.control_plane_nodes_public_ips[keys(var.control_plane_nodes)[0]] : var.control_plane_nodes[keys(var.control_plane_nodes)[0]]
@@ -154,7 +159,7 @@ resource "null_resource" "get_encryption_key" {
 
 data "local_file" "vault_token" {
   depends_on = [null_resource.copy_root_token]
-  filename   = "${path.module}/.${var.prefix}-root_token"
+  filename   = ".${var.prefix}-root_token"
 }
 
 data "local_file" "encryption_key" {
