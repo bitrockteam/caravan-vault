@@ -74,7 +74,6 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_consul_enc_key"></a> [consul\_enc\_key](#output\_consul\_enc\_key) | n/a |
-| <a name="output_files"></a> [files](#output\_files) | n/a |
 | <a name="output_vault_address"></a> [vault\_address](#output\_vault\_address) | n/a |
 | <a name="output_vault_token"></a> [vault\_token](#output\_vault\_token) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

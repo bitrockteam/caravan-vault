@@ -130,7 +130,7 @@ resource "null_resource" "copy_root_token" {
   ]
 
   triggers = {
-    token_sha1 = sha1(join("", [for f in fileset(".", "*_token") : filesha1(f)]))
+    token_sha1 = length([for f in fileset(".", "*${var.prefix}-root_token") : filesha1(f)]) > 0 ? "" : uuid()
   }
 
   provisioner "local-exec" {
