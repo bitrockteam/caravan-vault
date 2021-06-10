@@ -22,10 +22,13 @@ No modules.
 |------|------|
 | [local_file.ssh-key](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
 | [null_resource.copy_root_token](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.get_encryption_key](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.vault_cluster_node_1_init](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.vault_cluster_node_config](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.vault_cluster_node_local_service](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.vault_cluster_node_not_1_init](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [local_file.encryption_key](https://registry.terraform.io/providers/hashicorp/local/latest/docs/data-sources/file) | data source |
+| [local_file.vault_token](https://registry.terraform.io/providers/hashicorp/local/latest/docs/data-sources/file) | data source |
 
 ## Inputs
 
@@ -70,5 +73,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_consul_enc_key"></a> [consul\_enc\_key](#output\_consul\_enc\_key) | n/a |
 | <a name="output_vault_address"></a> [vault\_address](#output\_vault\_address) | n/a |
+| <a name="output_vault_token"></a> [vault\_token](#output\_vault\_token) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

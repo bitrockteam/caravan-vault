@@ -152,6 +152,11 @@ resource "null_resource" "get_encryption_key" {
   }
 }
 
+data "local_file" "vault_token" {
+  depends_on = [null_resource.copy_root_token]
+  filename   = "${path.module}/.${var.prefix}-root_token"
+}
+
 data "local_file" "encryption_key" {
   depends_on = [null_resource.get_encryption_key]
   filename   = ".${var.prefix}-encryption_key"
