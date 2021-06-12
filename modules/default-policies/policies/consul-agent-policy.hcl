@@ -5,6 +5,9 @@ path "consul/creds/consul-agent-role" {
 path "consul/creds/consul-esm-role" {
   capabilities = ["read"]
 }
+path "secret/data/consul/encryption" {
+  capabilities = ["read"]
+}
 path "secret/data/consul/nomad_server_token" {
   capabilities = ["read"]
 }
@@ -22,17 +25,17 @@ path "azure/creds/contributor" {
 }
 
 path "sys/mounts/*" {
-  capabilities = [ "sudo", "create", "read", "update", "delete", "list" ]
+  capabilities = ["sudo", "create", "read", "update", "delete", "list"]
 }
 
 path "sys/mounts" {
-  capabilities = [ "read", "list" ]
+  capabilities = ["read", "list"]
 }
 
 path "connect_pki*" {
-  capabilities = [ "create", "read", "update", "delete", "list", "sudo" ]
+  capabilities = ["create", "read", "update", "delete", "list", "sudo"]
 }
 
 path "tls_pki*" {
-  capabilities = [ "create", "read", "update", "delete", "list", "sudo" ]
+  capabilities = ["create", "read", "update", "delete", "list", "sudo"]
 }
