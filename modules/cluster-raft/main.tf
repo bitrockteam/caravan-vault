@@ -134,9 +134,27 @@ resource "null_resource" "copy_root_token" {
     }
     command = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${path.module}/.ssh-key ${var.ssh_user}@$SOURCE_HOST 'sudo cat /root/root_token' > .${var.prefix}-root_token"
   }
+}
+
+resource "null_resource" "get_encryption_key" {
+  depends_on = [
+    local_file.ssh-key,
+    null_resource.vault_cluster_node_1_init
+  ]
+  provisioner "local-exec" {
+    environment = {
+      SOURCE_HOST = var.control_plane_nodes_public_ips != null ? var.control_plane_nodes_public_ips[keys(var.control_plane_nodes)[0]] : var.control_plane_nodes[keys(var.control_plane_nodes)[0]]
+    }
+    command = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${path.module}/.ssh-key ${var.ssh_user}@$SOURCE_HOST 'sudo cat /root/encryption_key' > .${var.prefix}-encryption_key"
+  }
   provisioner "local-exec" {
     command = "rm ${path.module}/.ssh-key"
   }
+}
+
+data "local_file" "encryption_key" {
+  depends_on = [null_resource.get_encryption_key]
+  filename   = ".${var.prefix}-encryption_key"
 }
 
 resource "null_resource" "vault_cluster_node_not_1_init" {

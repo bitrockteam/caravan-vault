@@ -19,6 +19,9 @@ export VAULT_TOKEN=`sudo cat /root/root_token` VAULT_ADDR=http://127.0.0.1:8200 
 vault secrets enable -path=secret kv-v2 && \
 #### enable nomad secret engine
 vault secrets enable nomad && \
+#### consul encryption key
+consul keygen | sudo tee /root/encryption_key && \
+vault kv put secret/consul/encryption key="`sudo cat /root/encryption_key`"
 #### consul/connect/nomad pki
 # enable pki
 vault secrets enable -path=tls_pki pki && \
