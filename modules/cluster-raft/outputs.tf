@@ -7,6 +7,6 @@ output "consul_enc_key" {
 }
 
 output "vault_token" {
-  value     = data.local_file.vault_token.content
+  value     = trim(data.local_file.vault_token.content, "\n")
   sensitive = true
 }
