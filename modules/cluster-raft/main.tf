@@ -146,6 +146,11 @@ resource "null_resource" "get_encryption_key" {
     local_file.ssh-key,
     null_resource.vault_cluster_node_1_init
   ]
+
+  triggers = {
+    key_sha1 = length([for f in fileset(".", "*${var.prefix}-encryption_key") : filesha1(f)]) > 0 ? "" : uuid()
+  }
+
   provisioner "local-exec" {
     environment = {
       SOURCE_HOST = var.control_plane_nodes_public_ips != null ? var.control_plane_nodes_public_ips[keys(var.control_plane_nodes)[0]] : var.control_plane_nodes[keys(var.control_plane_nodes)[0]]
