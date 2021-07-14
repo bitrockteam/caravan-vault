@@ -128,6 +128,11 @@ resource "null_resource" "copy_root_token" {
     local_file.ssh-key,
     null_resource.vault_cluster_node_1_init
   ]
+
+  triggers = {
+    token_sha1 = length([for f in fileset(".", "*${var.prefix}-root_token") : filesha1(f)]) > 0 ? "" : uuid()
+  }
+
   provisioner "local-exec" {
     environment = {
       SOURCE_HOST = var.control_plane_nodes_public_ips != null ? var.control_plane_nodes_public_ips[keys(var.control_plane_nodes)[0]] : var.control_plane_nodes[keys(var.control_plane_nodes)[0]]
@@ -141,6 +146,11 @@ resource "null_resource" "get_encryption_key" {
     local_file.ssh-key,
     null_resource.vault_cluster_node_1_init
   ]
+
+  triggers = {
+    key_sha1 = length([for f in fileset(".", "*${var.prefix}-encryption_key") : filesha1(f)]) > 0 ? "" : uuid()
+  }
+
   provisioner "local-exec" {
     environment = {
       SOURCE_HOST = var.control_plane_nodes_public_ips != null ? var.control_plane_nodes_public_ips[keys(var.control_plane_nodes)[0]] : var.control_plane_nodes[keys(var.control_plane_nodes)[0]]
@@ -150,6 +160,11 @@ resource "null_resource" "get_encryption_key" {
   provisioner "local-exec" {
     command = "rm ${path.module}/.ssh-key"
   }
+}
+
+data "local_file" "vault_token" {
+  depends_on = [null_resource.copy_root_token]
+  filename   = ".${var.prefix}-root_token"
 }
 
 data "local_file" "encryption_key" {
