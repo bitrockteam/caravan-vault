@@ -128,7 +128,7 @@ resource "local_file" "ssh-key" {
 
 locals {
   ssh_command         = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${path.module}/.ssh-key"
-  ssh_command_bastion = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -J ${var.ssh_bastion_user}@${var.ssh_bastion_host}:${var.ssh_bastion_port} -i ${path.module}/.ssh-key"
+  ssh_command_bastion = "ssh-add ${path.module}/.ssh-key && ${local.ssh_command} -J ${var.ssh_bastion_user}@${var.ssh_bastion_host}:${var.ssh_bastion_port} -A"
 }
 
 resource "null_resource" "copy_root_token" {
