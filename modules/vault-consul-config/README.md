@@ -42,7 +42,9 @@ No modules.
 
 ## Inputs
 
-No inputs.
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_consul_address"></a> [consul\_address](#input\_consul\_address) | Consul Address | `string` | `"127.0.0.1:8500"` | no |
 
 ## Outputs
 

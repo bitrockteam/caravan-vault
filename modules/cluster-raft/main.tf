@@ -1,8 +1,11 @@
 resource "null_resource" "vault_cluster_node_config" {
+
   triggers = {
     ids = join("-", var.control_plane_nodes_ids)
   }
+
   for_each = var.control_plane_nodes
+
   provisioner "file" {
     destination = "/tmp/vault.hcl"
     content = <<-EOT
@@ -45,8 +48,8 @@ resource "null_resource" "vault_cluster_node_config" {
       azure_key_name    = var.azure_key_name
     }
 )}
-
     EOT
+
 connection {
   type                = "ssh"
   user                = var.ssh_user
@@ -123,6 +126,11 @@ resource "local_file" "ssh-key" {
   file_permission   = "0600"
 }
 
+locals {
+  ssh_command         = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${path.module}/.ssh-key"
+  ssh_command_bastion = "ssh-add ${path.module}/.ssh-key && ${local.ssh_command} -J ${var.ssh_bastion_user}@${var.ssh_bastion_host}:${var.ssh_bastion_port} -A"
+}
+
 resource "null_resource" "copy_root_token" {
   depends_on = [
     local_file.ssh-key,
@@ -137,7 +145,7 @@ resource "null_resource" "copy_root_token" {
     environment = {
       SOURCE_HOST = var.control_plane_nodes_public_ips != null ? var.control_plane_nodes_public_ips[keys(var.control_plane_nodes)[0]] : var.control_plane_nodes[keys(var.control_plane_nodes)[0]]
     }
-    command = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${path.module}/.ssh-key ${var.ssh_user}@$SOURCE_HOST 'sudo cat /root/root_token' > .${var.prefix}-root_token"
+    command = "${var.ssh_bastion_host != null ? local.ssh_command_bastion : local.ssh_command} ${var.ssh_user}@$SOURCE_HOST 'sudo cat /root/root_token' > .${var.prefix}-root_token"
   }
 }
 
@@ -155,7 +163,7 @@ resource "null_resource" "get_encryption_key" {
     environment = {
       SOURCE_HOST = var.control_plane_nodes_public_ips != null ? var.control_plane_nodes_public_ips[keys(var.control_plane_nodes)[0]] : var.control_plane_nodes[keys(var.control_plane_nodes)[0]]
     }
-    command = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${path.module}/.ssh-key ${var.ssh_user}@$SOURCE_HOST 'sudo cat /root/encryption_key' > .${var.prefix}-encryption_key"
+    command = "${var.ssh_bastion_host != null ? local.ssh_command_bastion : local.ssh_command} ${var.ssh_user}@$SOURCE_HOST 'sudo cat /root/encryption_key' > .${var.prefix}-encryption_key"
   }
   provisioner "local-exec" {
     command = "rm ${path.module}/.ssh-key"
