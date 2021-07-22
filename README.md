@@ -1,4 +1,4 @@
-# Caravan Vault Modules
+# Caravan Vault modules
 
 * [Agent](modules/agent/README.md)
 * [Cluster Raft](modules/cluster-raft/README.md)
