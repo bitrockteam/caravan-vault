@@ -1,4 +1,4 @@
-# Vault Authentication module
+# Caravan Vault Authentication
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements

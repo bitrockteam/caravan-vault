@@ -1,4 +1,4 @@
-# Cluster Raft module
+# Caravan Vault Cluster Raft
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements

@@ -1,4 +1,4 @@
-# Agent module
+# Caravan Vault Agent
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
