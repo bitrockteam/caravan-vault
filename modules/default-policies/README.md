@@ -1,4 +1,4 @@
-# Default Policies module
+# Caravan Vault Default Policies
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements

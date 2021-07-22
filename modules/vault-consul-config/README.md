@@ -1,4 +1,4 @@
-# Vault Consul Config module
+# Caravan Vault Consul Config
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements

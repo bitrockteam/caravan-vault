@@ -1,4 +1,4 @@
-# Secrets module
+# Caravan Vault Secrets
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
