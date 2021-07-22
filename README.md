@@ -6,3 +6,4 @@
 * [Secrets](modules/secrets/README.md)
 * [Vault Authentication](modules/vault-authentication/README.md)
 * [Vault Consul Config](modules/vault-consul-config/README.md)
+
