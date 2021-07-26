@@ -9,7 +9,6 @@ No requirements.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | n/a |
 | <a name="provider_vault"></a> [vault](#provider\_vault) | n/a |
 
 ## Modules
@@ -20,11 +19,9 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [google_service_account_key.pd_csi_sa_key](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account_key) | resource |
 | [vault_azure_secret_backend.azure](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/azure_secret_backend) | resource |
 | [vault_azure_secret_backend_role.contributor](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/azure_secret_backend_role) | resource |
 | [vault_generic_secret.pd_csi_sa_credentials](https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/generic_secret) | resource |
-| [google_service_account.pd_csi_sa](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/service_account) | data source |
 
 ## Inputs
 
@@ -37,6 +34,7 @@ No modules.
 | <a name="input_azure_subscription_id"></a> [azure\_subscription\_id](#input\_azure\_subscription\_id) | (optional) The Azure Subscription ID. | `string` | `null` | no |
 | <a name="input_azure_tenant_id"></a> [azure\_tenant\_id](#input\_azure\_tenant\_id) | (optional) The Azure Tenant ID. | `string` | `null` | no |
 | <a name="input_gcp_csi"></a> [gcp\_csi](#input\_gcp\_csi) | Enable creation of secrets used by GCP CSI setup | `bool` | `false` | no |
+| <a name="input_gcp_pd_csi_sa_key"></a> [gcp\_pd\_csi\_sa\_key](#input\_gcp\_pd\_csi\_sa\_key) | Private Key of the Google Service Account with Persistent Disk permissions | `string` | `null` | no |
 | <a name="input_gcp_project_id"></a> [gcp\_project\_id](#input\_gcp\_project\_id) | (optional) The GCP Project ID | `string` | `null` | no |
 
 ## Outputs
