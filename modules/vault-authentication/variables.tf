@@ -97,6 +97,7 @@ variable "gsuite_client_secret" {
   type        = string
   default     = null
   description = "(optional) When using GSUITE auth provider, the client secret"
+  sensitive   = true
 }
 variable "gsuite_default_role" {
   type        = string
@@ -169,11 +170,12 @@ variable "azure_subscription_ids" {
 }
 variable "azure_client_id" {
   type        = string
-  default     = ""
+  default     = null
   description = "(Optional) The client id for credentials to query the Azure APIs. Currently read permissions to query compute resources are required."
 }
 variable "azure_client_secret" {
   type        = string
-  default     = ""
+  default     = null
   description = "(Optional) The client secret for credentials to query the Azure APIs."
+  sensitive   = true
 }

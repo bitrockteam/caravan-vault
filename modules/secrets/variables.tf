@@ -4,6 +4,13 @@ variable "gcp_csi" {
   default     = false
 }
 
+variable "gcp_pd_csi_sa_key" {
+  type        = string
+  default     = null
+  sensitive   = true
+  description = "Private Key of the Google Service Account with Persistent Disk permissions"
+}
+
 variable "gcp_project_id" {
   type        = string
   default     = null
