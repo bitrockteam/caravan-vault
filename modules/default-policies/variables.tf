@@ -3,3 +3,8 @@ variable "control_plane_role_name" {
   type        = string
   description = "(optional) The control plane role name"
 }
+
+variable "enable_nomad" {
+  default = true
+  type    = string
+}
