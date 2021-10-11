@@ -44,6 +44,7 @@ resource "vault_policy" "nomad_anon_restricted" {
 
 #tfsec:ignore:GEN003
 resource "vault_token_auth_backend_role" "nomad_cluster_node" {
+  count                  = var.enable_nomad ? 1 : 0
   role_name              = var.control_plane_role_name
   allowed_policies       = [vault_policy.nomad_app_devs_volumes.name, vault_policy.nomad_ops.name]
   orphan                 = true
