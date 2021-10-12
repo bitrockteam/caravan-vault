@@ -67,12 +67,12 @@ resource "consul_acl_token" "ui_token" {
 resource "consul_acl_token" "nomad_server_token" {
   count       = var.enable_nomad ? 1 : 0
   description = "nomad server policy token"
-  policies    = [consul_acl_policy.nomad_server_policy.name]
+  policies    = [consul_acl_policy.nomad_server_policy.*.name]
 }
 resource "consul_acl_token" "nomad_client_token" {
   count       = var.enable_nomad ? 1 : 0
   description = "nomad client policy token"
-  policies    = [consul_acl_policy.nomad_client_policy.name]
+  policies    = [consul_acl_policy.nomad_client_policy.*.name]
 }
 
 data "consul_acl_token_secret_id" "ui_token" {
@@ -91,7 +91,7 @@ EOT
 
 data "consul_acl_token_secret_id" "nomad_client_token" {
   count       = var.enable_nomad ? 1 : 0
-  accessor_id = consul_acl_token.nomad_client_token.id
+  accessor_id = consul_acl_token.nomad_client_token[0].id
 }
 
 resource "vault_generic_secret" "nomad_client_token" {
@@ -100,14 +100,14 @@ resource "vault_generic_secret" "nomad_client_token" {
 
   data_json = <<EOT
 {
-  "token": "${data.consul_acl_token_secret_id.nomad_client_token.secret_id}"
+  "token": "${data.consul_acl_token_secret_id.nomad_client_token[0].secret_id}"
 }
 EOT
 }
 
 data "consul_acl_token_secret_id" "nomad_server_token" {
   count       = var.enable_nomad ? 1 : 0
-  accessor_id = consul_acl_token.nomad_server_token.id
+  accessor_id = consul_acl_token.nomad_server_token[0].id
 }
 
 resource "vault_generic_secret" "nomad_server_token" {
@@ -116,7 +116,7 @@ resource "vault_generic_secret" "nomad_server_token" {
 
   data_json = <<EOT
 {
-  "token": "${data.consul_acl_token_secret_id.nomad_server_token.secret_id}"
+  "token": "${data.consul_acl_token_secret_id.nomad_server_token[0].secret_id}"
 }
 EOT
 }
