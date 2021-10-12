@@ -37,10 +37,12 @@ resource "consul_acl_policy" "consul_esm_policy" {
   rules = file("${path.module}/acls/consul-esm.hcl")
 }
 resource "consul_acl_policy" "nomad_server_policy" {
+  count = var.enable_nomad ? 1 : 0
   name  = "nomad-server"
   rules = file("${path.module}/acls/nomad-server.hcl")
 }
 resource "consul_acl_policy" "nomad_client_policy" {
+  count = var.enable_nomad ? 1 : 0
   name  = "nomad-client"
   rules = file("${path.module}/acls/nomad-client.hcl")
 }
@@ -63,10 +65,12 @@ resource "consul_acl_token" "ui_token" {
   policies    = [consul_acl_policy.ui_policy.name]
 }
 resource "consul_acl_token" "nomad_server_token" {
+  count       = var.enable_nomad ? 1 : 0
   description = "nomad server policy token"
   policies    = [consul_acl_policy.nomad_server_policy.name]
 }
 resource "consul_acl_token" "nomad_client_token" {
+  count       = var.enable_nomad ? 1 : 0
   description = "nomad client policy token"
   policies    = [consul_acl_policy.nomad_client_policy.name]
 }
@@ -86,11 +90,13 @@ EOT
 }
 
 data "consul_acl_token_secret_id" "nomad_client_token" {
+  count       = var.enable_nomad ? 1 : 0
   accessor_id = consul_acl_token.nomad_client_token.id
 }
 
 resource "vault_generic_secret" "nomad_client_token" {
-  path = "secret/consul/nomad_client_token"
+  count = var.enable_nomad ? 1 : 0
+  path  = "secret/consul/nomad_client_token"
 
   data_json = <<EOT
 {
@@ -100,11 +106,13 @@ EOT
 }
 
 data "consul_acl_token_secret_id" "nomad_server_token" {
+  count       = var.enable_nomad ? 1 : 0
   accessor_id = consul_acl_token.nomad_server_token.id
 }
 
 resource "vault_generic_secret" "nomad_server_token" {
-  path = "secret/consul/nomad_server_token"
+  count = var.enable_nomad ? 1 : 0
+  path  = "secret/consul/nomad_server_token"
 
   data_json = <<EOT
 {
