@@ -35,7 +35,7 @@ template {
   source      = "/etc/consul.d/consul.hcl.tmpl"
   destination = "/etc/consul.d/consul.hcl"
 }
-
+%{ if enable_nomad ~}
 template {
   source      = "/etc/nomad.d/nomad_keyfile.tmpl"
   destination = "/etc/nomad.d/nomad_keyfile"
@@ -56,3 +56,4 @@ template {
   source      = "/etc/nomad.d/nomad.hcl.tmpl"
   destination = "/etc/nomad.d/nomad.hcl"
 }
+%{ endif ~}
