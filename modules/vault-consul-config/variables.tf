@@ -3,3 +3,7 @@ variable "consul_address" {
   default     = "127.0.0.1:8500"
   description = "Consul Address"
 }
+variable "enable_nomad" {
+  default = true
+  type    = string
+}

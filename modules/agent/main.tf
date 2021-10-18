@@ -11,6 +11,7 @@ resource "null_resource" "vault_gcp_agent_config" {
       vault_endpoint   = var.vault_endpoint
       tcp_listener     = var.tcp_listener
       tcp_listener_tls = var.tcp_listener_tls
+      enable_nomad     = var.enable_nomad
     }
     )}
       ${templatefile("${path.module}/gcp-auto-auth.tpl",
@@ -65,6 +66,7 @@ resource "null_resource" "vault_oci_agent_config" {
       vault_endpoint   = var.vault_endpoint
       tcp_listener     = var.tcp_listener
       tcp_listener_tls = var.tcp_listener_tls
+      enable_nomad     = var.enable_nomad
     }
     )}
       ${templatefile("${path.module}/oci-auto-auth.tpl",
@@ -154,6 +156,7 @@ resource "null_resource" "vault_approle_agent_config" {
       vault_endpoint   = var.vault_endpoint
       tcp_listener     = var.tcp_listener
       tcp_listener_tls = var.tcp_listener_tls
+      enable_nomad     = var.enable_nomad
     }
     )}
       ${templatefile("${path.module}/approle-auto-auth.tpl",
@@ -202,6 +205,7 @@ resource "null_resource" "vault_aws_agent_config" {
       vault_endpoint   = var.vault_endpoint
       tcp_listener     = var.tcp_listener
       tcp_listener_tls = var.tcp_listener_tls
+      enable_nomad     = var.enable_nomad
     }
     )}
       ${templatefile("${path.module}/aws-auto-auth.tpl",
@@ -254,6 +258,7 @@ resource "null_resource" "vault_azure_agent_config" {
       vault_endpoint   = var.vault_endpoint
       tcp_listener     = var.tcp_listener
       tcp_listener_tls = var.tcp_listener_tls
+      enable_nomad     = var.enable_nomad
     }
     )}
       ${templatefile("${path.module}/azure-auto-auth.tpl",

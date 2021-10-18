@@ -3,6 +3,11 @@ variable "vault_endpoint" {
   description = "(required) Where the vault server is"
 }
 
+variable "enable_nomad" {
+  type        = string
+  description = "(required) Enable Nomad cluster"
+}
+
 variable "tcp_listener" {
   type        = string
   description = "(optional) Where agent should bind in form of host:port"
