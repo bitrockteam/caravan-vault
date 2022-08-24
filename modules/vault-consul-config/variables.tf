@@ -7,3 +7,7 @@ variable "enable_nomad" {
   default = true
   type    = string
 }
+variable "ca_cert_file" {
+  type    = string
+  default = null
+}
