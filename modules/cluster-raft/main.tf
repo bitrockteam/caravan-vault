@@ -190,7 +190,7 @@ resource "null_resource" "vault_cluster_node_not_1_init" {
   ]
 
   provisioner "remote-exec" {
-    inline = ["sudo systemctl start vault"]
+    inline = ["sudo systemctl restart vault"]
     connection {
       type                = "ssh"
       user                = var.ssh_user
