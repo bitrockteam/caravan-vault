@@ -44,7 +44,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_ca_cert_file"></a> [ca\_cert\_file](#input\_ca\_cert\_file) | n/a | `string` | `null` | no |
+| <a name="input_ca_cert"></a> [ca\_cert](#input\_ca\_cert) | CA Pem Content | `string` | `null` | no |
 | <a name="input_consul_address"></a> [consul\_address](#input\_consul\_address) | Consul Address | `string` | `"127.0.0.1:8500"` | no |
 | <a name="input_enable_nomad"></a> [enable\_nomad](#input\_enable\_nomad) | n/a | `string` | `true` | no |
 

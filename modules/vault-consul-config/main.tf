@@ -7,7 +7,7 @@ resource "vault_consul_secret_backend" "consul_backend" {
   description = "Manages the Consul backend"
 
   address = var.consul_address
-  ca_cert = var.ca_cert_file
+  ca_cert = var.ca_cert
   token   = data.vault_generic_secret.consul_bootstrap_token.data["secretid"]
 }
 
