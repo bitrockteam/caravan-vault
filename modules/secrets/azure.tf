@@ -12,6 +12,8 @@ resource "vault_azure_secret_backend_role" "contributor" {
 
   backend = vault_azure_secret_backend.azure[0].path
   role    = "contributor"
+  max_ttl = "0"
+  ttl     = "0"
 
   azure_roles {
     role_name = "Contributor"
