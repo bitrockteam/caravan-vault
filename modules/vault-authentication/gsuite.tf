@@ -9,7 +9,10 @@ resource "vault_jwt_auth_backend" "gsuite" {
   oidc_client_secret = var.gsuite_client_secret
   default_role       = var.gsuite_default_role
   tune {
+    default_lease_ttl  = "768h"
     listing_visibility = "unauth"
+    max_lease_ttl      = "768h"
+    token_type         = "default-service"
   }
 }
 
