@@ -5,7 +5,8 @@ done
 
 set -e
 sudo ls -la /etc/vault.d/
-sudo systemctl start vault && \
+sudo systemctl start vault 
+while [  $(nc 127.0.0.1 8200 -z; echo $?)  -ne 0 ]; do sleep 3; done
 vault status -address=http://127.0.0.1:8200 | grep -q 'Initialized *true' && exit 0 || {
   sleep 10s && \
   systemctl status vault --no-pager && \
